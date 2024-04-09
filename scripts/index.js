@@ -1,81 +1,58 @@
-const createEl = (el) => document.createElement(el);
-const select = (el) => document.querySelector(el);
+import { createEl, select, parseBlock, generateId } from "./utils.js"
+import BlockArea from "./components/BlockArea.js"
 
-const testData = [
-  {
+const elements = {
+  content: select(".content"),
+  editor: select(".editor"),
+  addBtn: select(".add"),
+  renderBtn: select(".render")
+}
+
+// Library Initialization
+mermaid.initialize({startOnLoad: false })
+
+const testData = {
+  "abx": {
     type: "markdown",
     value: "# Marked in the browser\n\nRendered by **marked**.",
   },
-  {
-    type: "diagram",
-    value: `mindmap
-    root((mindmap))
-      Origins
-        Long history
-        ::icon(fa fa-book)
-        Popularisation
-          British popular psychology author Tony Buzan
-      Research
-        On effectiveness<br/>and features
-        On Automatic creation
-          Uses
-              Creative techniques
-              Strategic planning
-              Argument mapping
-      Tools
-        Pen and paper
-        Mermaid
-  
-  `,
-  },
-  {
+  "xyz": {
     type: "latex",
     value: "\\int_0^1 f(x) dx",
   },
-  {
+  "pqr": {
     type: "diagram",
     value: `flowchart LR 
     Start --> Stop`,
   },
-];
+};
 
-main(testData);
+let uiData = {}
 
-function main(data) {
-  let content = select(".content");
-  data.forEach((block) => content.append(parseBlock(block)));
-}
-
-function parseBlock(block) {
-  let blockOutput = null;
-
-  switch (block.type) {
-    case "markdown":
-      let mdContainer = createEl("div");
-      mdContainer.innerHTML = marked.parse(block.value);
-      blockOutput = mdContainer;
-      break;
-
-    case "latex":
-      let latexContainer = createEl("div");
-      latexContainer.innerHTML = katex.renderToString(block.value, {
-        throwOnError: false,
-      });
-      blockOutput = latexContainer;
-      break;
-
-    case "diagram":
-      let diagramContainer = createEl("div");
-      diagramContainer.innerHTML = `
-      <pre class="mermaid">
-        ${block.value}
-      </pre>
-      `;
-      blockOutput = diagramContainer;
-
-    default:
-      break;
+// Event Listeners
+elements.addBtn.addEventListener("click", () => {
+  const id = generateId()
+  
+  uiData[id] = {
+    type: "markdown",
+    value: ""
   }
+  
+  elements.editor.append(BlockArea({
+    id, uiData
+  }))
+})
 
-  return blockOutput;
+elements.renderBtn.addEventListener("click", async () => {
+  await renderContent(uiData);
+})
+
+async function renderContent(data) {
+  elements.content.innerHTML = ""
+  
+  for (let blockId in data) {
+    elements.content.append(parseBlock(data[blockId]))
+  }
+  
+  await mermaid.run();
 }

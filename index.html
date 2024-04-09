@@ -19,16 +19,27 @@
       crossorigin="anonymous"
     ></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"
+    ></script>
+    
 
     <title>dMind</title>
   </head>
   <body>
+    <div class="editor">
+      
+      <div class="actions">
+        <button class="add">Add</button>
+        <button class="render">Render</button>
+      </div> 
+      
+      
+    </div>
     <div class="content"></div>
-
+    
+   
     <script type="module" src="scripts/index.js"></script>
-    <script
-      type="module"
-      src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs"
-    ></script>
+
   </body>
 </html>

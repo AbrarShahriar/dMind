@@ -4,8 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="stylesheet" href="styles/styles.css" />
+    <link rel="stylesheet" href="styles/index.css" />
 
+    <!-- KaTeX (LaTeX Renderer) -->
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css"
@@ -18,36 +19,57 @@
       integrity="sha384-hIoBPJpTUs74ddyc4bFZSM1TVlQDA60VBbJS0oA934VSz82sBx1X7kSx2ATBDIyd"
       crossorigin="anonymous"
     ></script>
+
+    <!-- Marked (Markdown Renderer) -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"
-    ></script>
+
+    <!-- Mermaid (Diagram Renderer) -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
+
+    <!-- FloatingUI (Positioning Engine) -->
     <script src="https://cdn.jsdelivr.net/npm/@floating-ui/core@1.6.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.6.3"></script>
+
+    <!-- Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/siimple-icons/siimple-icons.css"
+    />
+    <script src="https://unpkg.com/boxicons@2.1.3/dist/boxicons.js"></script>
 
     <title>dMind</title>
   </head>
   <body>
-    
-    <div class="content"></div>
+    <div class="container">
+      <div class="left_panel">
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. In excepturi
+        qui fuga reprehenderit, ullam aliquam sint magni maiores dolorem.
+        Dolore, vitae accusamus? Dolores ipsum facilis dignissimos laboriosam.
+        Temporibus, ab sequi.
+      </div>
 
-    <div class="editor">
-      
-      <div class="actions">
-        <button class="add">Add</button>
-        <div class="dropdown">
-          <button class="dropdown_btn markdown">Markdown</button>
-          <button class="dropdown_btn latex">Latex</button>
-          <button class="dropdown_btn diagram">Diagram</button>
+      <div class="topbar_and_editor-content">
+        <div class="topbar">
+          <button class="btn_primary btn_render">Render</button>
+          <button class="btn_primary btn_render">Render</button>
         </div>
-        <button class="render">Render</button>
-      </div> 
-      
-      
-    </div>
-    
-   
-    <script type="module" src="scripts/index.js"></script>
 
+        <div class="editor_and_content">
+          <div class="editor">
+            <div class="inputs"></div>
+            <div class="actions">
+              <button class="btn_primary btn_add-media">
+                <i class="si-plus"></i>
+              </button>
+              <div class="dropdown"></div>
+            </div>
+          </div>
+
+          <div class="content"></div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="scripts/index.js"></script>
   </body>
 </html>

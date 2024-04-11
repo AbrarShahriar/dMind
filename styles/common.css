@@ -1,0 +1,39 @@
+@import url("./colors.css");
+
+@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Poppins:wght@400;600;700;800;900&display=swap");
+
+* {
+  padding: 0;
+  margin: 0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Fira Code", monospace;
+  background-color: var(--editor-background);
+}
+
+.btn_primary {
+  color: white;
+  cursor: pointer;
+  padding: 10px 20px;
+  font-weight: 500;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  background-color: var(--button-background);
+}
+
+.btn_danger {
+  color: white;
+  cursor: pointer;
+  padding: 10px 20px;
+  font-weight: 500;
+  font-size: 22px;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  background-color: var(--button-background-danger);
+}

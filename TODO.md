@@ -1,5 +1,5 @@
-- Markdown parser
-- Diagram library
+- Markdown parser (done)
+- Diagram library (done)
 - Image embed
 - PDF/HTML export
-- LaTeX renderer
+- LaTeX renderer (done)

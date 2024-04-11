@@ -1,36 +1,41 @@
-import { createEl, select, parseBlock, generateId } from "./utils.js"
+import { createEl, select, parseBlock, generateId, FloatingUI } from "./utils.js"
 import BlockArea from "./components/BlockArea.js"
 
 const elements = {
   content: select(".content"),
   editor: select(".editor"),
   addBtn: select(".add"),
-  renderBtn: select(".render")
+  renderBtn: select(".render"),
+  dropdown: select(".dropdown"),
+  markdownBtn: select(".markdown"),
+  latexBtn: select(".latex"),
+  diagramBtn: select(".diagram")
 }
+
+document.addEventListener('click', function(event) {
+  const outsideClick = !elements.addBtn.contains(event.target);
+  
+  if(outsideClick) {
+    FloatingUI.hideDropdown(elements)
+  }
+});
 
 // Library Initialization
 mermaid.initialize({startOnLoad: false })
 
-const testData = {
-  "abx": {
-    type: "markdown",
-    value: "# Marked in the browser\n\nRendered by **marked**.",
-  },
-  "xyz": {
-    type: "latex",
-    value: "\\int_0^1 f(x) dx",
-  },
-  "pqr": {
-    type: "diagram",
-    value: `flowchart LR 
-    Start --> Stop`,
-  },
-};
-
+// Initial State
 let uiData = {}
 
 // Event Listeners
 elements.addBtn.addEventListener("click", () => {
+  FloatingUI.showDropdown(elements)
+})
+
+elements.renderBtn.addEventListener("click", async () => {
+  await renderContent(uiData);
+})
+
+elements.markdownBtn.addEventListener("click", () => {
   const id = generateId()
   
   uiData[id] = {
@@ -39,12 +44,34 @@ elements.addBtn.addEventListener("click", () => {
   }
   
   elements.editor.append(BlockArea({
-    id, uiData
+    id, uiData, type: "markdown"
   }))
 })
 
-elements.renderBtn.addEventListener("click", async () => {
-  await renderContent(uiData);
+elements.latexBtn.addEventListener("click", () => {
+  const id = generateId()
+  
+  uiData[id] = {
+    type: "latex",
+    value: ""
+  }
+  
+  elements.editor.append(BlockArea({
+    id, uiData, type: "latex"
+  }))
+})
+
+elements.diagramBtn.addEventListener("click", () => {
+  const id = generateId()
+  
+  uiData[id] = {
+    type: "diagram",
+    value: ""
+  }
+  
+  elements.editor.append(BlockArea({
+    id, uiData, type: "diagram"
+  }))
 })
 
 async function renderContent(data) {

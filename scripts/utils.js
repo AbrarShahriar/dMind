@@ -53,3 +53,36 @@ export const parseBlock = (block) =>  {
 
   return blockOutput;
 }
+
+function update(elements) {
+  FloatingUIDOM.computePosition(
+    elements.addBtn,
+    elements.dropdown,
+    {
+      placement: "top",
+      middleware: [
+        FloatingUIDOM.offset(5),
+        FloatingUIDOM.flip(),
+        FloatingUIDOM.shift({ padding: 5 })
+      ]
+    }
+  ).then(({ x, y }) => {
+    Object.assign(elements.dropdown.style, {
+      left: `${x}px`,
+      top: `${y}px`,
+    });
+  });
+}
+
+function showDropdown(elements) {
+  elements.dropdown.style.display = 'block';
+  update(elements);
+}
+ 
+function hideDropdown(elements) {
+  elements.dropdown.style.display = '';
+}
+
+export const FloatingUI = {
+  update, showDropdown, hideDropdown
+}

@@ -22,21 +22,29 @@
     <script
       src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"
     ></script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/@floating-ui/core@1.6.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.6.3"></script>
 
     <title>dMind</title>
   </head>
   <body>
+    
+    <div class="content"></div>
+
     <div class="editor">
       
       <div class="actions">
         <button class="add">Add</button>
+        <div class="dropdown">
+          <button class="dropdown_btn markdown">Markdown</button>
+          <button class="dropdown_btn latex">Latex</button>
+          <button class="dropdown_btn diagram">Diagram</button>
+        </div>
         <button class="render">Render</button>
       </div> 
       
       
     </div>
-    <div class="content"></div>
     
    
     <script type="module" src="scripts/index.js"></script>

@@ -97,6 +97,7 @@ export const parseBlock = (block) => {
       let latexContainer = createEl("div");
       latexContainer.innerHTML = katex.renderToString(block.value, {
         throwOnError: false,
+        displayMode: true
       });
       latexContainer.style.fontSize = "1.1em";
       latexContainer.style.textAlign = "center";

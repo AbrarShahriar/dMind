@@ -13,19 +13,22 @@
 [role="tab"] {
   border: none;
   font-size: 14px;
-  border-radius: 5px;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
   display: flex;
   align-items: center;
   gap: 10px;
+  border-bottom: 2px solid var(--topbar-background);
 }
 
 [role="tab"]:hover:not([aria-selected="true"]) {
-  background-color: var(--left-panel-background);
   border: none;
+  background-color: var(--left-panel-background);
 }
 
 [role="tab"][aria-selected="true"] {
   border: none;
+  border-bottom: 2px solid var(--button-background);
   background-color: var(--left-panel-background);
 }
 

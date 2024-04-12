@@ -3,6 +3,8 @@
   --topbar-background: #09191f;
   --left-panel-background: #153b47;
   --button-background: #0e639c;
+  --button-active-background: #3588bf;
   --button-background-danger: #b14b34;
+  --button-active-background-danger: #c0604b;
   --border-color: #30535f;
 }

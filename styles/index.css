@@ -1,5 +1,6 @@
 @import url("./common.css");
 @import url("./colors.css");
+@import url("./library_custom_styles.css");
 
 .container {
   width: 100vw;
@@ -7,8 +8,8 @@
   align-items: stretch;
 }
 
-.container .left_panel {
-  width: 15%;
+.left_panel {
+  width: 20%;
   height: 100vh;
   background: var(--left-panel-background);
 
@@ -16,29 +17,53 @@
   top: 0;
 }
 
-.container .topbar_and_editor-content {
-  width: 85%;
+.note_list {
+  padding: 15px 15px 15px 0;
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.note {
+  padding: 5px 5px 5px 10px;
+  color: white;
+  cursor: pointer;
+  font-size: 15px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  transition: background-color 40ms ease-in-out;
+}
+
+.note:hover {
+  background-color: var(--border-color);
+}
+
+.topbar_and_editor-content {
+  width: 80%;
   display: flex;
   flex-direction: column;
 }
 
-.topbar_and_editor-content .topbar {
+.topbar {
   background-color: var(--topbar-background);
-  padding: 10px;
   display: flex;
+  align-items: center;
   box-shadow: 0 1px 10px -5px rgba(0, 0, 0, 0.25);
   margin-bottom: 10px;
+  padding: 10px 15px;
 }
 
-.topbar .btn_render {
-  margin-left: auto;
+.btn_drawer_open {
+  margin: 5px 5px 5px 10px;
+}
+
+.drawer_component {
+  display: none;
 }
 
 .topbar_and_editor-content .editor {
   padding: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: end;
 }
 
 .editor .inputs {
@@ -52,9 +77,12 @@
 .inputs .input {
   display: flex;
   gap: 10px;
+  align-items: flex-end;
 }
 
-.inputs .input textarea {
+.inputs .input textarea,
+.inputs .input span,
+.inputs .input p {
   font-size: 16px;
   width: 100%;
   white-space: pre-wrap;
@@ -72,16 +100,14 @@
 }
 
 .editor .btn_add-media {
-  font-size: 24px;
-  margin-left: auto;
-  padding: 10px 20px;
+  display: block;
+  width: 30%;
+  margin: 0 auto 50px auto;
 }
 
 .dropdown {
   display: none;
-
   flex-direction: column;
-  gap: 10px;
   width: max-content;
   position: absolute;
   top: 0;
@@ -89,7 +115,6 @@
   background: var(--topbar-background);
   color: white;
   font-weight: bold;
-  padding: 5px;
   border-radius: 5px;
 }
 
@@ -97,23 +122,39 @@
   text-transform: capitalize;
   padding: 10px 30px;
   cursor: pointer;
-  background-color: var(--left-panel-background);
+  background-color: transparent;
   color: white;
   border: none;
   border-radius: 5px;
+  transition: background-color 70ms ease-in-out;
+}
+.dropdown_btn:hover {
+  background-color: var(--left-panel-background);
 }
 
 .content {
   color: white;
-  padding: 10px;
+  padding: 20px 30px;
+}
+
+.content > * {
+  margin-bottom: 20px;
 }
 
 @media only screen and (max-width: 768px) {
+  .topbar {
+    padding: 0;
+  }
+
   .left_panel {
     display: none;
   }
 
   .container .topbar_and_editor-content {
     width: 100%;
+  }
+
+  .drawer_component {
+    display: block;
   }
 }

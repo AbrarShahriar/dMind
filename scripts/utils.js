@@ -4,6 +4,7 @@ import { dispatch, initialState } from "./state.js";
 
 export const createEl = (el) => document.createElement(el);
 export const select = (el) => document.querySelector(el);
+export const selectAll = (el) => document.querySelectorAll(el);
 
 export const random = (min = 0, max = 10) =>
   min + Math.floor(Math.random() * max);
@@ -88,7 +89,7 @@ export const parseBlock = (block) => {
   switch (block.type) {
     case MediaTypes.Markdown:
       let mdContainer = createEl("div");
-      mdContainer.innerHTML = marked.parseInline(block.value);
+      mdContainer.innerHTML = customParser(block.value);
       blockOutput = mdContainer;
       break;
 
@@ -97,6 +98,9 @@ export const parseBlock = (block) => {
       latexContainer.innerHTML = katex.renderToString(block.value, {
         throwOnError: false,
       });
+      latexContainer.style.fontSize = "1.1em";
+      latexContainer.style.textAlign = "center";
+
       blockOutput = latexContainer;
       break;
 
@@ -160,13 +164,68 @@ export const handleAddBtnClick = ({ type }) => {
 
 // Render Content
 
-export async function renderContent(data = initialState.editorData) {
+export async function renderContent() {
+  const editorDataArray = Object.keys(initialState.editorData).filter(
+    (el) => el != "undefined" && el
+  );
+
   const content = select(".content");
   content.innerHTML = "";
 
-  for (let blockId in data) {
-    content.append(parseBlock(data[blockId]));
-  }
+  editorDataArray.forEach((key) =>
+    content.append(parseBlock(initialState.editorData[key]))
+  );
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
 
   await mermaid.run();
 }
+
+// Custom Markdown Parser
+const customParser = (text) => {
+  const lines = text.split("\n");
+
+  const parsedText = lines
+    .map((line, index) => {
+      // Check if the line is part of a list
+      const isListItem = /^\s*[*\-+]\s+|^\s*\d+\.\s+/.test(line);
+      const isNextLineListItem =
+        index < lines.length - 1 &&
+        /^\s*[*\-+]\s+|^\s*\d+\.\s+/.test(lines[index + 1]);
+
+      if (isListItem || isNextLineListItem) return line;
+
+      if (line.trim() === "\\") return line.replace("\\", "&nbsp;\n");
+
+      return line + "&nbsp;\n";
+    })
+    .join("\n");
+
+  return marked.parse(parsedText, { breaks: true });
+};
+
+export const autoResizeTextarea = (e, id, type) => {
+  // const tx = selectAll(".inputs textarea");
+  const tx = selectAll(".inputs p");
+
+  tx.forEach((textarea) => {
+    textarea.style.height = "auto";
+    textarea.style.height = textarea.scrollHeight + "px";
+    textarea.scrollTop = textarea.scrollHeight;
+    // window.scrollTo(
+    //   window.scrollLeft,
+    //   textarea.scrollTop + textarea.scrollHeight
+    // );
+  });
+
+  if (e) {
+    dispatch({
+      type: ActionTypes.UpdateEditorData,
+      payload: {
+        mediaType: type,
+        id,
+        value: e.target.innerText,
+      },
+    });
+  }
+};

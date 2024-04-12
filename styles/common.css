@@ -18,22 +18,68 @@ body {
 .btn_primary {
   color: white;
   cursor: pointer;
-  padding: 10px 20px;
+  padding: 10px 15px;
   font-weight: 500;
   border: none;
   outline: none;
   border-radius: 5px;
+  background-color: var(--button-background);
+  transition: background-color 70ms ease-in-out;
+}
+
+.btn_primary:hover {
+  background-color: var(--button-active-background);
+}
+
+.btn_primary-bordered {
+  color: white;
+  cursor: pointer;
+  font-weight: 500;
+  outline: none;
+  transition: background-color 40ms ease-in-out;
+  border-radius: 5px;
+  padding: 10px 15px;
+  font-size: 22px;
+  font-weight: bold;
+  background-color: transparent;
+  border: 2px solid var(--button-background);
+}
+
+.btn_primary-bordered:hover {
   background-color: var(--button-background);
 }
 
 .btn_danger {
   color: white;
   cursor: pointer;
-  padding: 10px 20px;
+  padding: 15px;
+  font-weight: 500;
+  font-size: 22px;
+  border: none;
+  outline: none;
+  transition: background-color 40ms ease-in-out;
+  border-radius: 5px;
+  background-color: var(--button-background-danger);
+}
+.btn_danger:hover {
+  background-color: var(--button-active-background-danger);
+}
+
+.btn_icon {
+  color: white;
+  cursor: pointer;
   font-weight: 500;
   font-size: 22px;
   border: none;
   outline: none;
   border-radius: 5px;
-  background-color: var(--button-background-danger);
+  background-color: transparent;
+}
+
+a {
+  text-decoration: none;
+  color: white;
+  display: flex;
+  align-items: center;
+  text-align: center;
 }

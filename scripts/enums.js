@@ -1,5 +1,6 @@
 export const MediaTypes = {
   Markdown: "markdown",
+  Code: "code",
   Latex: "latex",
   Diagram: "diagram",
 };

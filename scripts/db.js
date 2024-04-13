@@ -33,6 +33,53 @@ export const setupDb = async () => {
   return connection;
 };
 
+export const updateCurrentNote = async () => {
+  let noOfRowsUpdated = await initialState.dbConnection.update({
+      in: "Notes",
+      where: {
+        id: initialState.currentNoteId,
+      },
+      set: {
+        updatedAt: new Date(),
+        body: initialState.editorData,
+      },
+    });
+    return noOfRowsUpdated
+}
+
+export const insertNewNote = async () => {
+  let noOfRowsCreated = await initialState.dbConnection.insert({
+    into: "Notes",
+    values: [
+      {
+        body: initialState.editorData,
+          },
+        ],
+  });
+  return noOfRowsCreated
+}
+
+export const noteAlreadyExists = async () => {
+  let note = await initialState.dbConnection.select({
+    from: "Notes",
+    where: {
+      id: initialState.currentNoteId,
+    },
+  })
+  
+  return note[0]
+}
+
+export const deleteCurrentNode = async (id) => {
+  let rowsDeleted = await connection.remove({
+    from: "Notes",
+    where: {
+        id,
+    }
+  });
+  return rowsDeleted
+}
+
 export const renderRetrievedNoteList = async () => {
   
   const results = await initialState.dbConnection.select({
@@ -41,5 +88,6 @@ export const renderRetrievedNoteList = async () => {
     
   results.forEach((note) => {
       select(".note_list").append(Note({ id: note.id, body: note.body }));
+      select(".nav_note_list").append(Note({ id: note.id, body: note.body }))
     });
 }

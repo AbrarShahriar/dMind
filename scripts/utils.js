@@ -87,11 +87,27 @@ export const parseBlock = (block) => {
   let blockOutput = null;
 
   switch (block.type) {
+    
     case MediaTypes.Markdown:
       let mdContainer = createEl("div");
       mdContainer.innerHTML = customParser(block.value);
       blockOutput = mdContainer;
       break;
+      
+    case MediaTypes.Code:
+      let codeContainer = createEl("div")
+      
+      const lang = block.value.split("\n")[0]
+      
+      codeContainer.innerHTML = `
+      <pre>
+        <code class="language-${lang}">${block.value.split("\n").slice(1, block.value.length).join("\n")}
+        </code>
+      </pre>
+      `
+      
+      blockOutput = codeContainer
+      break
 
     case MediaTypes.Latex:
       let latexContainer = createEl("div");
@@ -177,7 +193,7 @@ export async function renderContent() {
     content.append(parseBlock(initialState.editorData[key]))
   );
 
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  hljs.highlightAll()
 
   await mermaid.run();
 }
@@ -201,7 +217,7 @@ const customParser = (text) => {
       return line + "&nbsp;\n";
     })
     .join("\n");
-
+  
   return marked.parse(parsedText, { breaks: true });
 };
 

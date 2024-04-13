@@ -17,7 +17,11 @@
   top: 0;
 }
 
-.note_list {
+.nav_body {
+  background: var(--left-panel-background);
+}
+
+.note_list, .nav_note_list {
   padding: 15px 15px 15px 0;
   margin-top: 50px;
   display: flex;

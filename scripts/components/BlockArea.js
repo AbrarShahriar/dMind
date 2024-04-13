@@ -1,5 +1,5 @@
 import { ActionTypes, MediaTypes } from "../enums.js";
-import { dispatch } from "../state.js";
+import { dispatch, initialState } from "../state.js";
 import { autoResizeTextarea, createEl, select } from "../utils.js";
 
 export default function BlockArea({ id, type, defaultValue = "" }) {
@@ -33,6 +33,7 @@ export default function BlockArea({ id, type, defaultValue = "" }) {
     });
 
     select(`.input-${id}`).remove();
+    delete initialState.editorData[id]
   });
 
   container.append(p);

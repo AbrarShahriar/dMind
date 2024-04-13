@@ -1,7 +1,7 @@
 import { select, FloatingUI, renderContent } from "./utils.js";
 import { ActionTypes, MediaTypes } from "./enums.js";
 import MediaButton from "./components/MediaButton.js";
-import { setupDb, renderRetrievedNoteList } from "./db.js";
+import { setupDb, renderRetrievedNoteList, updateCurrentNote, insertNewNote, noteAlreadyExists } from "./db.js";
 import { dispatch, initialState } from "./state.js";
 import Note from "./components/Note.js";
 
@@ -72,34 +72,12 @@ elements.saveBtn.addEventListener("click", async () => {
     }).showToast();
   }
 
-  const noteAlreadyExists = await initialState.dbConnection.select({
-    from: "Notes",
-    where: {
-      id: initialState.currentNoteId,
-    },
-  });
+  const ifNoteAlreadyExists = await noteAlreadyExists()
 
-  if (noteAlreadyExists[0]) {
-    noOfRowsInsertedOrUpdated = await initialState.dbConnection.update({
-      in: "Notes",
-      where: {
-        id: initialState.currentNoteId,
-      },
-      set: {
-        updatedAt: new Date(),
-        body: initialState.editorData,
-      },
-    });
-    
+  if (ifNoteAlreadyExists) {
+    noOfRowsInsertedOrUpdated = await updateCurrentNote()
   } else {
-    noOfRowsInsertedOrUpdated = await initialState.dbConnection.insert({
-      into: "Notes",
-      values: [
-        {
-          body: initialState.editorData,
-        },
-      ],
-    });
+    noOfRowsInsertedOrUpdated = await insertNewNote()
   }
 
   if (noOfRowsInsertedOrUpdated > 0) {

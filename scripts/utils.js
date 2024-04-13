@@ -2,6 +2,12 @@ import BlockArea from "./components/BlockArea.js";
 import { ActionTypes, MediaTypes } from "./enums.js";
 import { dispatch, initialState } from "./state.js";
 
+const md = markdownit({
+  // breaks: true,
+  // xhtmlOut: true,
+  // html: true,
+});
+
 export const createEl = (el) => document.createElement(el);
 export const select = (el) => document.querySelector(el);
 export const selectAll = (el) => document.querySelectorAll(el);
@@ -87,33 +93,36 @@ export const parseBlock = (block) => {
   let blockOutput = null;
 
   switch (block.type) {
-    
     case MediaTypes.Markdown:
       let mdContainer = createEl("div");
       mdContainer.innerHTML = customParser(block.value);
+      // mdContainer.innerHTML = md.render(block.value);
+      // mdContainer.innerHTML = md.render(block.value.replace(/\n\n$/gm, "\n "));
       blockOutput = mdContainer;
       break;
-      
+
     case MediaTypes.Code:
-      let codeContainer = createEl("div")
-      
-      const lang = block.value.split("\n")[0]
-      
+      let codeContainer = createEl("div");
+
+      const lang = block.value.split("\n")[0];
+
       codeContainer.innerHTML = `
       <pre>
-        <code class="language-${lang}">${block.value.split("\n").slice(1, block.value.length).join("\n")}
-        </code>
+        <code class="language-${lang}">${block.value
+        .split("\n")
+        .slice(1, block.value.length)
+        .join("\n")}</code>
       </pre>
-      `
-      
-      blockOutput = codeContainer
-      break
+      `;
+
+      blockOutput = codeContainer;
+      break;
 
     case MediaTypes.Latex:
       let latexContainer = createEl("div");
       latexContainer.innerHTML = katex.renderToString(block.value, {
         throwOnError: false,
-        displayMode: true
+        displayMode: true,
       });
       latexContainer.style.fontSize = "1.1em";
       latexContainer.style.textAlign = "center";
@@ -193,7 +202,7 @@ export async function renderContent() {
     content.append(parseBlock(initialState.editorData[key]))
   );
 
-  hljs.highlightAll()
+  hljs.highlightAll();
 
   await mermaid.run();
 }
@@ -217,7 +226,7 @@ const customParser = (text) => {
       return line + "&nbsp;\n";
     })
     .join("\n");
-  
+
   return marked.parse(parsedText, { breaks: true });
 };
 
@@ -228,7 +237,6 @@ export const autoResizeTextarea = (e, id, type) => {
     textarea.style.height = "auto";
     textarea.style.height = textarea.scrollHeight + "px";
     textarea.scrollTop = textarea.scrollHeight;
-
   });
 
   if (e) {
@@ -240,5 +248,16 @@ export const autoResizeTextarea = (e, id, type) => {
         value: e.target.innerText,
       },
     });
+  }
+};
+
+export const updateSaveButton = () => {
+  const saveBtn = select(".btn_save");
+  if (initialState.currentNoteSaved) {
+    saveBtn.innerHTML = `<i class="btn_icon si-check"></i>`;
+    saveBtn.disabled = true;
+  } else {
+    saveBtn.innerHTML = `<i class="btn_icon si-disk"></i>`;
+    saveBtn.disabled = false;
   }
 };

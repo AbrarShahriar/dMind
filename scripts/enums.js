@@ -3,6 +3,7 @@ export const MediaTypes = {
   Code: "code",
   Latex: "latex",
   Diagram: "diagram",
+  Table: "table",
 };
 
 export const ActionTypes = {
@@ -11,4 +12,6 @@ export const ActionTypes = {
   UpdateCurrentNoteSavedState: "update_current_note_saved_state",
   SetDbConnection: "set_db_connection",
   SetCurrentNoteId: "set_current_note_id",
+  SetPreviouslyCreatedNoteOpened: "set_previously_created_note_opened",
+  SetTabs: "set_tabs",
 };

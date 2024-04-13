@@ -1,9 +1,19 @@
-import { select, FloatingUI, renderContent } from "./utils.js";
+import {
+  select,
+  FloatingUI,
+  renderContent,
+  updateSaveButton,
+  selectAll,
+} from "./utils.js";
 import { ActionTypes, MediaTypes } from "./enums.js";
 import MediaButton from "./components/MediaButton.js";
-import { setupDb, renderRetrievedNoteList, updateCurrentNote, insertNewNote, noteAlreadyExists } from "./db.js";
+import {
+  setupDb,
+  renderRetrievedNoteList,
+  updateCurrentNote,
+  insertNewNote,
+} from "./db.js";
 import { dispatch, initialState } from "./state.js";
-import Note from "./components/Note.js";
 
 const elements = {
   content: select(".content"),
@@ -14,6 +24,7 @@ const elements = {
   dropdown: select(".dropdown"),
   noteList: select(".note_list"),
   inputs: select(".inputs"),
+  newNoteBtnList: selectAll(".btn_new_note"),
 };
 
 // Detect Click Outside Menu
@@ -31,7 +42,11 @@ new Pushbar({
   blur: true,
   overlay: true,
 });
-new Tabby("[data-tabs]");
+const tabs = new Tabby("[data-tabs]");
+dispatch({
+  type: ActionTypes.SetTabs,
+  payload: { tabs },
+});
 
 // DB Initialization
 setupDb()
@@ -39,8 +54,8 @@ setupDb()
     dispatch({
       type: ActionTypes.SetDbConnection,
       payload: { dbConnection: con },
-    })
-    await renderRetrievedNoteList()
+    });
+    await renderRetrievedNoteList();
   })
   .catch((err) => console.error(err));
 
@@ -54,7 +69,8 @@ elements.renderBtn.addEventListener("click", async () => {
 });
 
 elements.saveBtn.addEventListener("click", async () => {
-  let noOfRowsInsertedOrUpdated = 0;
+  let noOfRowsUpdated = 0;
+  let newlyCreatedNote = null;
 
   const isEditorEmpty =
     Object.keys(initialState.editorData).length <= 0 ? true : false;
@@ -72,21 +88,59 @@ elements.saveBtn.addEventListener("click", async () => {
     }).showToast();
   }
 
-  const ifNoteAlreadyExists = await noteAlreadyExists()
-
-  if (ifNoteAlreadyExists) {
-    noOfRowsInsertedOrUpdated = await updateCurrentNote()
+  if (initialState.previouslyCreatedNoteOpened) {
+    noOfRowsUpdated = await updateCurrentNote();
   } else {
-    noOfRowsInsertedOrUpdated = await insertNewNote()
+    newlyCreatedNote = await insertNewNote();
   }
 
-  if (noOfRowsInsertedOrUpdated > 0) {
+  if (newlyCreatedNote && newlyCreatedNote[0]) {
     dispatch({
       type: ActionTypes.UpdateCurrentNoteSavedState,
       payload: { currentNoteSaved: true },
     });
-    updateSaveButton();
+    dispatch({
+      type: ActionTypes.SetCurrentNoteId,
+      payload: { currentNoteId: newlyCreatedNote[0].id },
+    });
   }
+
+  if (noOfRowsUpdated > 0) {
+    dispatch({
+      type: ActionTypes.UpdateCurrentNoteSavedState,
+      payload: { currentNoteSaved: true },
+    });
+  }
+
+  await renderRetrievedNoteList();
+  return updateSaveButton();
+});
+
+elements.newNoteBtnList.forEach((newNoteBtn) => {
+  newNoteBtn.addEventListener("click", () => {
+    dispatch({
+      type: ActionTypes.UpdateCurrentNoteSavedState,
+      payload: { currentNoteSaved: false },
+    });
+    dispatch({
+      type: ActionTypes.SetCurrentNoteId,
+      payload: { currentNoteId: null },
+    });
+    dispatch({
+      type: ActionTypes.SetEditorData,
+      payload: { editorData: {} },
+    });
+    dispatch({
+      type: ActionTypes.SetPreviouslyCreatedNoteOpened,
+      payload: { previouslyCreatedNoteOpened: false },
+    });
+
+    elements.inputs.innerHTML = "";
+    elements.content.innerHTML = "";
+
+    updateSaveButton();
+    tabs.toggle("#editor");
+  });
 });
 
 // Add Media Buttons To Dropdown
@@ -94,13 +148,3 @@ elements.saveBtn.addEventListener("click", async () => {
 Object.keys(MediaTypes).forEach((key) => {
   elements.dropdown.append(MediaButton({ type: MediaTypes[key] }));
 });
-
-function updateSaveButton() {
-  if (initialState.currentNoteSaved) {
-    elements.saveBtn.innerHTML = `<i class="btn_icon si-check"></i>`;
-    elements.saveBtn.disabled = true;
-  } else {
-    elements.saveBtn.innerHTML = `<i class="btn_icon si-disk"></i>`;
-    elements.saveBtn.disabled = false;
-  }
-}

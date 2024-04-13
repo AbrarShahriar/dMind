@@ -1,4 +1,6 @@
-import { initialState } from "./state.js"
+import Note from "./components/Note.js";
+import { initialState } from "./state.js";
+import { generateId, select } from "./utils.js";
 
 export const setupDb = async () => {
   const DB_NAME = "dMind-db";
@@ -10,6 +12,7 @@ export const setupDb = async () => {
     name: "Notes",
     columns: {
       id: { primaryKey: true, autoIncrement: true },
+      title: { notNull: true, dataType: "string", default: generateId() },
       body: { notNull: true, dataType: "object" },
       createdAt: { notNull: true, dataType: "date_time", default: new Date() },
       updatedAt: { notNull: true, dataType: "date_time", default: new Date() },
@@ -35,59 +38,53 @@ export const setupDb = async () => {
 
 export const updateCurrentNote = async () => {
   let noOfRowsUpdated = await initialState.dbConnection.update({
-      in: "Notes",
-      where: {
-        id: initialState.currentNoteId,
-      },
-      set: {
-        updatedAt: new Date(),
-        body: initialState.editorData,
-      },
-    });
-    return noOfRowsUpdated
-}
+    in: "Notes",
+    where: {
+      id: initialState.currentNoteId,
+    },
+    set: {
+      updatedAt: new Date(),
+      body: initialState.editorData,
+    },
+  });
+  return noOfRowsUpdated;
+};
 
 export const insertNewNote = async () => {
-  let noOfRowsCreated = await initialState.dbConnection.insert({
+  let newlyCreatedNote = await initialState.dbConnection.insert({
     into: "Notes",
     values: [
       {
         body: initialState.editorData,
-          },
-        ],
+      },
+    ],
+    return: true,
   });
-  return noOfRowsCreated
-}
-
-export const noteAlreadyExists = async () => {
-  let note = await initialState.dbConnection.select({
-    from: "Notes",
-    where: {
-      id: initialState.currentNoteId,
-    },
-  })
-  
-  return note[0]
-}
+  await renderRetrievedNoteList();
+  return newlyCreatedNote;
+};
 
 export const deleteCurrentNode = async (id) => {
-  let rowsDeleted = await connection.remove({
+  let rowsDeleted = await initialState.dbConnection.remove({
     from: "Notes",
     where: {
-        id,
-    }
+      id,
+    },
   });
-  return rowsDeleted
-}
+  await renderRetrievedNoteList();
+  return rowsDeleted;
+};
 
 export const renderRetrievedNoteList = async () => {
-  
   const results = await initialState.dbConnection.select({
-      from: "Notes",
-    });
-    
+    from: "Notes",
+  });
+
+  select(".note_list").innerHTML = "";
+  select(".nav_note_list").innerHTML = "";
+
   results.forEach((note) => {
-      select(".note_list").append(Note({ id: note.id, body: note.body }));
-      select(".nav_note_list").append(Note({ id: note.id, body: note.body }))
-    });
-}
+    select(".note_list").append(Note({ id: note.id, body: note.body }));
+    select(".nav_note_list").append(Note({ id: note.id, body: note.body }));
+  });
+};

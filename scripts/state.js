@@ -5,6 +5,8 @@ export let initialState = {
   currentNoteSaved: false,
   dbConnection: null,
   currentNoteId: null,
+  previouslyCreatedNoteOpened: false,
+  tabs: null,
 };
 
 export const dispatch = (action) => {
@@ -49,6 +51,20 @@ export const dispatch = (action) => {
       initialState = {
         ...initialState,
         currentNoteId: action.payload.currentNoteId,
+      };
+      return;
+
+    case ActionTypes.SetPreviouslyCreatedNoteOpened:
+      initialState = {
+        ...initialState,
+        previouslyCreatedNoteOpened: action.payload.previouslyCreatedNoteOpened,
+      };
+      return;
+
+    case ActionTypes.SetTabs:
+      initialState = {
+        ...initialState,
+        tabs: action.payload.tabs,
       };
       return;
 

@@ -23,6 +23,7 @@
 
 [role="tab"]:hover:not([aria-selected="true"]) {
   border: none;
+  border-bottom: 2px solid var(--topbar-background);
   background-color: var(--left-panel-background);
 }
 

@@ -1,3 +1,5 @@
+import { initialState } from "./state.js"
+
 export const setupDb = async () => {
   const DB_NAME = "dMind-db";
   const connection = new JsStore.Connection(
@@ -7,7 +9,6 @@ export const setupDb = async () => {
   var tblNotes = {
     name: "Notes",
     columns: {
-      // Here "Id" is name of column
       id: { primaryKey: true, autoIncrement: true },
       body: { notNull: true, dataType: "object" },
       createdAt: { notNull: true, dataType: "date_time", default: new Date() },
@@ -22,7 +23,6 @@ export const setupDb = async () => {
   };
 
   var isDbCreated = await connection.initDb(db);
-  // isDbCreated will be true when database will be initiated for first time
 
   if (isDbCreated) {
     console.log("Db Created & connection is opened");
@@ -32,3 +32,14 @@ export const setupDb = async () => {
 
   return connection;
 };
+
+export const renderRetrievedNoteList = async () => {
+  
+  const results = await initialState.dbConnection.select({
+      from: "Notes",
+    });
+    
+  results.forEach((note) => {
+      select(".note_list").append(Note({ id: note.id, body: note.body }));
+    });
+}

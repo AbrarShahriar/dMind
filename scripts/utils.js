@@ -206,17 +206,13 @@ const customParser = (text) => {
 };
 
 export const autoResizeTextarea = (e, id, type) => {
-  // const tx = selectAll(".inputs textarea");
   const tx = selectAll(".inputs p");
 
   tx.forEach((textarea) => {
     textarea.style.height = "auto";
     textarea.style.height = textarea.scrollHeight + "px";
     textarea.scrollTop = textarea.scrollHeight;
-    // window.scrollTo(
-    //   window.scrollLeft,
-    //   textarea.scrollTop + textarea.scrollHeight
-    // );
+
   });
 
   if (e) {

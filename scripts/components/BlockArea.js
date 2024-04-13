@@ -7,22 +7,15 @@ export default function BlockArea({ id, type, defaultValue = "" }) {
   container.classList.add("input");
   container.classList.add(`input-${id}`);
 
-  let textarea = createEl("textarea");
-  textarea.classList.add(id);
-
-  let span = createEl("p");
-  span.classList.add(id);
-  span.contentEditable = true;
+  let p = createEl("p");
+  p.classList.add(id);
+  p.contentEditable = true;
 
   if (defaultValue) {
-    span.innerText = defaultValue;
-    textarea.value = defaultValue;
+    p.innerText = defaultValue;
   }
 
-  textarea.addEventListener("input", () => autoResizeTextarea());
-  textarea.addEventListener("change", (e) => autoResizeTextarea(e, id, type));
-  span.addEventListener("input", (e) => autoResizeTextarea(e, id, type));
-  // span.addEventListener("change", (e) => autoResizeTextarea(e, id, type));
+  p.addEventListener("input", (e) => autoResizeTextarea(e, id, type));
 
   let dltBtn = createEl("button");
   dltBtn.classList.add("btn_danger");
@@ -42,8 +35,7 @@ export default function BlockArea({ id, type, defaultValue = "" }) {
     select(`.input-${id}`).remove();
   });
 
-  // container.append(textarea);
-  container.append(span);
+  container.append(p);
   container.append(dltBtn);
   return container;
 }

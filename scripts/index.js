@@ -1,7 +1,7 @@
 import { select, FloatingUI, renderContent } from "./utils.js";
 import { ActionTypes, MediaTypes } from "./enums.js";
 import MediaButton from "./components/MediaButton.js";
-import { setupDb } from "./db.js";
+import { setupDb, renderRetrievedNoteList } from "./db.js";
 import { dispatch, initialState } from "./state.js";
 import Note from "./components/Note.js";
 
@@ -39,15 +39,8 @@ setupDb()
     dispatch({
       type: ActionTypes.SetDbConnection,
       payload: { dbConnection: con },
-    });
-
-    const results = await con.select({
-      from: "Notes",
-    });
-
-    results.forEach((note) => {
-      elements.noteList.append(Note({ id: note.id, body: note.body }));
-    });
+    })
+    await renderRetrievedNoteList()
   })
   .catch((err) => console.error(err));
 
@@ -67,7 +60,16 @@ elements.saveBtn.addEventListener("click", async () => {
     Object.keys(initialState.editorData).length <= 0 ? true : false;
 
   if (isEditorEmpty) {
-    return alert("Write Something!");
+    return Toastify({
+      text: "Write Something!",
+      duration: 2000,
+      gravity: "top",
+      position: "right",
+      stopOnFocus: true,
+      style: {
+        background: "#b14b34",
+      },
+    }).showToast();
   }
 
   const noteAlreadyExists = await initialState.dbConnection.select({
@@ -88,17 +90,17 @@ elements.saveBtn.addEventListener("click", async () => {
         body: initialState.editorData,
       },
     });
-    return;
+    
+  } else {
+    noOfRowsInsertedOrUpdated = await initialState.dbConnection.insert({
+      into: "Notes",
+      values: [
+        {
+          body: initialState.editorData,
+        },
+      ],
+    });
   }
-
-  noOfRowsInsertedOrUpdated = await initialState.dbConnection.insert({
-    into: "Notes",
-    values: [
-      {
-        body: initialState.editorData,
-      },
-    ],
-  });
 
   if (noOfRowsInsertedOrUpdated > 0) {
     dispatch({
@@ -108,6 +110,8 @@ elements.saveBtn.addEventListener("click", async () => {
     updateSaveButton();
   }
 });
+
+// Add Media Buttons To Dropdown
 
 Object.keys(MediaTypes).forEach((key) => {
   elements.dropdown.append(MediaButton({ type: MediaTypes[key] }));

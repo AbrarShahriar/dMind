@@ -247,7 +247,10 @@ const customParser = (text) => {
   renderer.blockquote = (quote) => {
     return `<blockquote class="md_blockquote">${quote}</blockquote>`
   }
-
+  renderer.image = (href, title, text) => {
+    return `<img src="${href}" alt="${text}" style="width: 100%; object-fit: contain;" >`
+  }
+  
   return marked.parse(parsedText, { breaks: true, renderer });
 };
 

@@ -176,6 +176,7 @@
 .dropdown {
   display: none;
   flex-direction: column;
+  flex-wrap: wrap;
   width: max-content;
   position: absolute;
   top: 0;

@@ -172,6 +172,7 @@ function update(elements) {
     Object.assign(elements.dropdown.style, {
       left: `${x}px`,
       top: `${y}px`,
+      display: "flex"
     });
   });
 }

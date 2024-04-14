@@ -1,14 +1,13 @@
 import BlockArea from "./components/BlockArea.js";
 import { ActionTypes, MediaTypes } from "./enums.js";
 import { dispatch, initialState } from "./state.js";
-import { ttable } from "./lib/ttable.js"
-
+import { ttable } from "./lib/ttable.js";
 
 const md = markdownit({
   breaks: true,
   // xhtmlOut: true,
   // html: true,
-  gfm: true
+  gfm: true,
 });
 
 export const createEl = (el) => document.createElement(el);
@@ -97,21 +96,20 @@ export const parseBlock = (block) => {
 
   switch (block.type) {
     case MediaTypes.Markdown:
-      
       let mdContainer = createEl("div");
       // mdContainer.innerHTML = marked.parse(block.value);
       mdContainer.innerHTML = customParser(block.value);
       // mdContainer.innerHTML = md.render(block.value);
       blockOutput = mdContainer;
       break;
-      
+
     case MediaTypes.Table:
-      let tableContainer = createEl("div")
-      
-      tableContainer.innerHTML = ttable.toHtml(block.value)
-      
-      blockOutput = tableContainer
-      break
+      let tableContainer = createEl("div");
+
+      tableContainer.innerHTML = ttable.toHtml(block.value);
+
+      blockOutput = tableContainer;
+      break;
 
     case MediaTypes.Code:
       let codeContainer = createEl("div");
@@ -172,7 +170,7 @@ function update(elements) {
     Object.assign(elements.dropdown.style, {
       left: `${x}px`,
       top: `${y}px`,
-      display: "flex"
+      display: "flex",
     });
   });
 }
@@ -215,6 +213,11 @@ export async function renderContent() {
     content.append(parseBlock(initialState.editorData[key]))
   );
 
+  renderMathInElement(select(".content"), {
+    delimiters: [{ left: "$$", right: "$$", display: false }],
+    throwOnError: false,
+  });
+
   hljs.highlightAll();
 
   await mermaid.run();
@@ -243,15 +246,15 @@ const customParser = (text) => {
   const renderer = new marked.Renderer();
 
   renderer.list = (body, ordered, start) => {
-    return `<ul class='md_list'>${body}</ul>`
-  }
+    return `<ul class='md_list'>${body}</ul>`;
+  };
   renderer.blockquote = (quote) => {
-    return `<blockquote class="md_blockquote">${quote}</blockquote>`
-  }
+    return `<blockquote class="md_blockquote">${quote}</blockquote>`;
+  };
   renderer.image = (href, title, text) => {
-    return `<img src="${href}" alt="${text}" style="width: 100%; object-fit: contain;" >`
-  }
-  
+    return `<img src="${href}" alt="${text}" style="width: 100%; object-fit: contain;" >`;
+  };
+
   return marked.parse(parsedText, { breaks: true, renderer });
 };
 

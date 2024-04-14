@@ -4,6 +4,7 @@ import {
   renderContent,
   updateSaveButton,
   selectAll,
+  autoResizeTextarea,
 } from "./utils.js";
 import { ActionTypes, MediaTypes } from "./enums.js";
 import MediaButton from "./components/MediaButton.js";
@@ -14,6 +15,8 @@ import {
   insertNewNote,
 } from "./db.js";
 import { dispatch, initialState } from "./state.js";
+import { resurge } from "./lib/resurge.js";
+import BlockArea from "./components/BlockArea.js";
 
 const elements = {
   content: select(".content"),
@@ -25,6 +28,8 @@ const elements = {
   noteList: select(".note_list"),
   inputs: select(".inputs"),
   newNoteBtnList: selectAll(".btn_new_note"),
+  undoBtn: select(".undo"),
+  redoBtn: select(".redo"),
 };
 
 // Detect Click Outside Menu
@@ -143,8 +148,74 @@ elements.newNoteBtnList.forEach((newNoteBtn) => {
   });
 });
 
+elements.undoBtn.addEventListener("click", () => {
+  dispatch({
+    type: ActionTypes.SetEditorData,
+    payload: { editorData: resurge.undo() },
+  });
+  console.log(initialState.editorData);
+  dispatch({
+    type: ActionTypes.UpdateCurrentNoteSavedState,
+    payload: { currentNoteSaved: false },
+  });
+
+  select(".inputs").innerHTML = "";
+
+  for (const key in initialState.editorData) {
+    select(".inputs").append(
+      BlockArea({
+        id: key,
+        type: initialState.editorData[key].type,
+        defaultValue: initialState.editorData[key].value,
+      })
+    );
+  }
+  updateSaveButton();
+  autoResizeTextarea();
+});
+
+elements.redoBtn.addEventListener("click", () => {
+  dispatch({
+    type: ActionTypes.SetEditorData,
+    payload: { editorData: resurge.redo() },
+  });
+  console.log(initialState.editorData);
+  dispatch({
+    type: ActionTypes.UpdateCurrentNoteSavedState,
+    payload: { currentNoteSaved: false },
+  });
+  select(".inputs").innerHTML = "";
+
+  for (const key in initialState.editorData) {
+    select(".inputs").append(
+      BlockArea({
+        id: key,
+        type: initialState.editorData[key].type,
+        defaultValue: initialState.editorData[key].value,
+      })
+    );
+  }
+  updateSaveButton();
+  autoResizeTextarea();
+});
+
 // Add Media Buttons To Dropdown
 
 Object.keys(MediaTypes).forEach((key) => {
   elements.dropdown.append(MediaButton({ type: MediaTypes[key] }));
 });
+
+// resurge.setState(initialState.editorData);
+// let obj = {};
+// resurge.setState(obj);
+
+// obj = { ...obj, a: 1 };
+
+// resurge.addState(obj);
+// delete obj.a;
+// resurge.addState(obj);
+
+// console.log(resurge.getStateHistory());
+// console.log("UNDO", resurge.undo());
+// console.log("REDO", resurge.redo());
+// console.log("UNDO", resurge.undo());

@@ -1,4 +1,5 @@
 import { ActionTypes } from "../enums.js";
+import { resurge } from "../lib/resurge.js";
 import { dispatch, initialState } from "../state.js";
 import {
   autoResizeTextarea,
@@ -11,6 +12,9 @@ export default function BlockArea({ id, type, defaultValue = "" }) {
   let container = createEl("div");
   container.classList.add("input");
   container.classList.add(`input-${id}`);
+
+  let actions = createEl("div");
+  actions.classList.add("block_actions");
 
   let typeSpan = createEl("span");
   typeSpan.classList.add("type_span");
@@ -36,11 +40,14 @@ export default function BlockArea({ id, type, defaultValue = "" }) {
   });
 
   let dltBtn = createEl("button");
-  dltBtn.classList.add("btn_danger");
   dltBtn.classList.add("btn_delete");
   dltBtn.innerHTML = `<i class="si-trash"></i>`;
 
   dltBtn.addEventListener("click", (e) => {
+    // save current state before deleting for undo/redo
+    resurge.addState(initialState.editorData);
+
+    // after saving state. now delete data
     dispatch({
       type: ActionTypes.UpdateEditorData,
       payload: {
@@ -51,11 +58,16 @@ export default function BlockArea({ id, type, defaultValue = "" }) {
     });
 
     select(`.input-${id}`).remove();
+
     delete initialState.editorData[id];
+    resurge.addState(initialState.editorData);
+    console.log(resurge.getStateHistory());
   });
 
+  actions.append(typeSpan);
+  actions.append(dltBtn);
+
   container.append(p);
-  container.append(dltBtn);
-  container.append(typeSpan);
+  container.append(actions);
   return container;
 }

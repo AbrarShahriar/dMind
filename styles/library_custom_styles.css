@@ -57,12 +57,14 @@
 
 .ttable {
   width: 100%;
+  font-size: 14px;
   /* border-collapse: collapse; */
   border: 1px solid var(--left-panel-background);
   text-align: center;
 }
 
-.ttable td, .ttable th {
+.ttable td,
+.ttable th {
   padding: 10px;
   border: none;
 }
@@ -77,4 +79,16 @@
 
 .ttable tr:nth-child(even) {
   background-color: var(--topbar-background);
+}
+
+@media only screen and (max-width: 768px) {
+  .ttable td,
+  .ttable th {
+    padding: 5px;
+    border: none;
+  }
+
+  .katex {
+    font-size: 1.1em;
+  }
 }

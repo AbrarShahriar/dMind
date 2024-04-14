@@ -79,18 +79,21 @@
   width: 80%;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .topbar {
   background-color: var(--topbar-background);
   display: flex;
   align-items: flex-end;
-  box-shadow: 0 1px 10px -5px rgba(0, 0, 0, 0.25);
-  box-shadow: 0 1px 10px -5px rgba(50, 50, 50, 0.25);
-  position: relative;
+  box-shadow: 0 0px 15px -2px rgba(0, 0, 0, 0.5);
   margin-bottom: 10px;
   padding-top: 15px;
   padding-left: 15px;
+  /* position: sticky; */
+  top: 0;
+  /* z-index: 1; */
+  width: 100%;
 }
 
 .btn_drawer_open {
@@ -108,14 +111,26 @@
   bottom: -24px;
 }
 
+.btn_save {
+  font-size: 22px;
+  margin-right: 10px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.editor,
+.content {
+  margin-top: 30px;
+}
+
 .editor {
-  padding: 10px;
+  padding: 10px 20px 10px 30px;
 }
 
 .editor .inputs {
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 20px;
   width: 100%;
   margin-bottom: 20px;
 }
@@ -123,8 +138,15 @@
 .inputs .input {
   position: relative;
   display: flex;
+  flex-direction: column;
   gap: 10px;
   align-items: flex-end;
+}
+
+.input .block_actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .inputs .input .type_span {
@@ -133,10 +155,15 @@
   font-size: 12px;
   padding: 5px;
   border-radius: 5px;
-  position: absolute;
-  bottom: -17px;
-  left: 0;
   text-transform: capitalize;
+}
+
+.btn_delete {
+  cursor: pointer;
+  background-color: transparent;
+  font-size: 22px;
+  color: var(--button-active-background-danger);
+  border: none;
 }
 
 .inputs .input textarea,
@@ -145,7 +172,7 @@
   font-size: 16px;
   width: 100%;
   padding: 10px;
-  padding-bottom: 15px;
+  padding-bottom: 20px;
   word-break: break-all;
   resize: none;
   color: white;
@@ -166,13 +193,6 @@
   margin: 0 auto 50px auto;
 }
 
-.btn_save {
-  font-size: 22px;
-  margin-right: 10px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
-}
-
 .dropdown {
   display: none;
   flex-direction: column;
@@ -190,7 +210,7 @@
 
 .dropdown_btn {
   text-transform: capitalize;
-  padding: 15px 50px;
+  padding: 10px 50px;
   cursor: pointer;
   background-color: transparent;
   color: white;
@@ -229,5 +249,14 @@
 
   .drawer_component {
     display: block;
+  }
+
+  .editor {
+    padding: 5px 10px;
+  }
+
+  .content {
+    color: white;
+    padding: 10px 15px;
   }
 }

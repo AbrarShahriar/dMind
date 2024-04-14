@@ -10,7 +10,7 @@ export let initialState = {
 };
 
 export const dispatch = (action) => {
-  console.log(action);
+  // console.log(action);
 
   switch (action.type) {
     case ActionTypes.SetEditorData:

@@ -17,6 +17,12 @@
       integrity="sha384-hIoBPJpTUs74ddyc4bFZSM1TVlQDA60VBbJS0oA934VSz82sBx1X7kSx2ATBDIyd"
       crossorigin="anonymous"
     ></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js"
+      integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk"
+      crossorigin="anonymous"
+    ></script>
 
     <!-- Marked (Markdown Parser) -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -29,7 +35,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/dark.min.css"
     />
-    <link rel="stylesheet" href="styles/atom-one-dark.css">
+    <link rel="stylesheet" href="styles/atom-one-dark.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 
     <!-- Mermaid (Diagram Renderer) -->
@@ -136,9 +142,10 @@
             <i class="si-disk"></i>
           </button>
 
-          <!-- <div class="status_bar">
-            <span> Why dMind is better than most notetaking tools? </span>
-          </div> -->
+          <div class="status_bar">
+            <button class="undo">undo</button>
+            <button class="redo">redo</button>
+          </div>
         </div>
 
         <div class="editor_and_content">

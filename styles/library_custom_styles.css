@@ -1,5 +1,7 @@
 @import url("./colors.css");
 
+/* Tabby */
+
 [role="tablist"] {
   border: none;
   font-size: 14px;
@@ -37,4 +39,42 @@
   [role="tablist"] {
     margin-left: 10px;
   }
+}
+
+/* MarkedJS */
+
+.md_list {
+  margin-left: 15px;
+}
+
+.md_blockquote {
+  display: block;
+  padding: 5px 5px 5px 15px;
+  border-left: 3px solid var(--button-background);
+}
+
+/* TTable */
+
+.ttable {
+  width: 100%;
+  /* border-collapse: collapse; */
+  border: 1px solid var(--left-panel-background);
+  text-align: center;
+}
+
+.ttable td, .ttable th {
+  padding: 10px;
+  border: none;
+}
+
+.ttable tr {
+  border: none;
+}
+
+.ttable tr:nth-child(odd) {
+  background-color: var(--left-panel-background);
+}
+
+.ttable tr:nth-child(even) {
+  background-color: var(--topbar-background);
 }

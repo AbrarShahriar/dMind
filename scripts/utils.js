@@ -1,11 +1,14 @@
 import BlockArea from "./components/BlockArea.js";
 import { ActionTypes, MediaTypes } from "./enums.js";
 import { dispatch, initialState } from "./state.js";
+import { ttable } from "./lib/ttable.js"
+
 
 const md = markdownit({
-  // breaks: true,
+  breaks: true,
   // xhtmlOut: true,
   // html: true,
+  gfm: true
 });
 
 export const createEl = (el) => document.createElement(el);
@@ -94,12 +97,21 @@ export const parseBlock = (block) => {
 
   switch (block.type) {
     case MediaTypes.Markdown:
+      
       let mdContainer = createEl("div");
+      // mdContainer.innerHTML = marked.parse(block.value);
       mdContainer.innerHTML = customParser(block.value);
       // mdContainer.innerHTML = md.render(block.value);
-      // mdContainer.innerHTML = md.render(block.value.replace(/\n\n$/gm, "\n "));
       blockOutput = mdContainer;
       break;
+      
+    case MediaTypes.Table:
+      let tableContainer = createEl("div")
+      
+      tableContainer.innerHTML = ttable.toHtml(block.value)
+      
+      blockOutput = tableContainer
+      break
 
     case MediaTypes.Code:
       let codeContainer = createEl("div");
@@ -227,7 +239,16 @@ const customParser = (text) => {
     })
     .join("\n");
 
-  return marked.parse(parsedText, { breaks: true });
+  const renderer = new marked.Renderer();
+
+  renderer.list = (body, ordered, start) => {
+    return `<ul class='md_list'>${body}</ul>`
+  }
+  renderer.blockquote = (quote) => {
+    return `<blockquote class="md_blockquote">${quote}</blockquote>`
+  }
+
+  return marked.parse(parsedText, { breaks: true, renderer });
 };
 
 export const autoResizeTextarea = (e, id, type) => {

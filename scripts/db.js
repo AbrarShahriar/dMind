@@ -47,6 +47,8 @@ export const updateCurrentNote = async () => {
       body: initialState.editorData,
     },
   });
+
+  await renderRetrievedNoteList();
   return noOfRowsUpdated;
 };
 

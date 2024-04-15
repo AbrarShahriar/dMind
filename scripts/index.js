@@ -1,11 +1,4 @@
-import {
-  select,
-  FloatingUI,
-  renderContent,
-  updateSaveButton,
-  selectAll,
-  autoResizeTextarea,
-} from "./utils.js";
+import { select, FloatingUI, selectAll, generateId } from "./utils.js";
 import { ActionTypes, MediaTypes } from "./enums.js";
 import MediaButton from "./components/MediaButton.js";
 import {
@@ -15,8 +8,10 @@ import {
   insertNewNote,
 } from "./db.js";
 import { dispatch, initialState } from "./state.js";
-import { resurge } from "./lib/resurge.js";
+import { renderContent } from "./lib/parser.js";
 import BlockArea from "./components/BlockArea.js";
+
+// document.documentElement.style.setProperty("--editor-background", "green");
 
 const elements = {
   content: select(".content"),
@@ -30,7 +25,7 @@ const elements = {
   newNoteBtnList: selectAll(".btn_new_note"),
   undoBtn: select(".undo"),
   redoBtn: select(".redo"),
-  drawer: select(".drawer")
+  drawer: select(".drawer"),
 };
 
 // Library Initialization
@@ -48,14 +43,9 @@ dispatch({
 // Detect Click Outside Menu
 document.addEventListener("click", function (event) {
   const outsideClickOfAddBtn = !elements.addBtn.contains(event.target);
-  const outsideClickOfDrawer = !elements.drawer.contains(event.target)
 
   if (outsideClickOfAddBtn) {
     FloatingUI.hideDropdown(elements);
-  }
-  
-  if(outsideClickOfDrawer) {
-    // pushbar.close()
   }
 });
 
@@ -87,19 +77,13 @@ elements.saveBtn.addEventListener("click", async () => {
     Object.keys(initialState.editorData).length <= 0 ? true : false;
 
   if (isEditorEmpty) {
-    return Toastify({
+    return Swal.fire({
+      icon: "error",
       text: "Write Something!",
-      duration: 2000,
-      gravity: "top",
-      position: "right",
-      stopOnFocus: true,
-      style: {
-        background: "#b14b34",
-      },
-    }).showToast();
+    });
   }
 
-  if (initialState.previouslyCreatedNoteOpened) {
+  if (initialState.previouslyCreatedNoteOpened || initialState.currentNoteId) {
     noOfRowsUpdated = await updateCurrentNote();
   } else {
     newlyCreatedNote = await insertNewNote();
@@ -123,8 +107,7 @@ elements.saveBtn.addEventListener("click", async () => {
     });
   }
 
-  await renderRetrievedNoteList();
-  return updateSaveButton();
+  return;
 });
 
 elements.newNoteBtnList.forEach((newNoteBtn) => {
@@ -149,69 +132,82 @@ elements.newNoteBtnList.forEach((newNoteBtn) => {
     elements.inputs.innerHTML = "";
     elements.content.innerHTML = "";
 
-    updateSaveButton();
     tabs.toggle("#editor");
   });
-});
-
-elements.undoBtn.addEventListener("click", () => {
-  dispatch({
-    type: ActionTypes.SetEditorData,
-    payload: { editorData: resurge.undo() },
-  });
-  console.log(initialState.editorData);
-  dispatch({
-    type: ActionTypes.UpdateCurrentNoteSavedState,
-    payload: { currentNoteSaved: false },
-  });
-
-  select(".inputs").innerHTML = "";
-
-  for (const key in initialState.editorData) {
-    select(".inputs").append(
-      BlockArea({
-        id: key,
-        type: initialState.editorData[key].type,
-        defaultValue: initialState.editorData[key].value,
-      })
-    );
-  }
-  updateSaveButton();
-  autoResizeTextarea();
-});
-
-elements.redoBtn.addEventListener("click", () => {
-  dispatch({
-    type: ActionTypes.SetEditorData,
-    payload: { editorData: resurge.redo() },
-  });
-  console.log(initialState.editorData);
-  dispatch({
-    type: ActionTypes.UpdateCurrentNoteSavedState,
-    payload: { currentNoteSaved: false },
-  });
-  select(".inputs").innerHTML = "";
-
-  for (const key in initialState.editorData) {
-    select(".inputs").append(
-      BlockArea({
-        id: key,
-        type: initialState.editorData[key].type,
-        defaultValue: initialState.editorData[key].value,
-      })
-    );
-  }
-  updateSaveButton();
-  autoResizeTextarea();
 });
 
 // Add Media Buttons To Dropdown
 
 Object.keys(MediaTypes).forEach((key) => {
-  elements.dropdown.append(MediaButton({ type: MediaTypes[key] }));
+  elements.dropdown.append(
+    MediaButton({
+      type: MediaTypes[key],
+      onClick: () => {
+        elements.inputs.append(
+          BlockArea({
+            id: generateId(),
+            type: MediaTypes[key],
+          })
+        );
+      },
+    })
+  );
 });
 
-resurge.setState(initialState.editorData);
+// UNDO REDO
+
+// elements.undoBtn.addEventListener("click", () => {
+//   dispatch({
+//     type: ActionTypes.SetEditorData,
+//     payload: { editorData: resurge.undo() },
+//   });
+//   console.log(initialState.editorData);
+//   dispatch({
+//     type: ActionTypes.UpdateCurrentNoteSavedState,
+//     payload: { currentNoteSaved: false },
+//   });
+
+//   select(".inputs").innerHTML = "";
+
+//   for (const key in initialState.editorData) {
+//     select(".inputs").append(
+//       BlockArea({
+//         id: key,
+//         type: initialState.editorData[key].type,
+//         defaultValue: initialState.editorData[key].value,
+//       })
+//     );
+//   }
+//   updateSaveButton();
+//   autoResizeTextarea();
+// });
+
+// elements.redoBtn.addEventListener("click", () => {
+//   dispatch({
+//     type: ActionTypes.SetEditorData,
+//     payload: { editorData: resurge.redo() },
+//   });
+//   console.log(initialState.editorData);
+//   dispatch({
+//     type: ActionTypes.UpdateCurrentNoteSavedState,
+//     payload: { currentNoteSaved: false },
+//   });
+//   select(".inputs").innerHTML = "";
+
+//   for (const key in initialState.editorData) {
+//     select(".inputs").append(
+//       BlockArea({
+//         id: key,
+//         type: initialState.editorData[key].type,
+//         defaultValue: initialState.editorData[key].value,
+//       })
+//     );
+//   }
+//   updateSaveButton();
+//   autoResizeTextarea();
+// });
+
+// resurge.setState(initialState.editorData);
 // let obj = {};
 // resurge.setState(obj);
 

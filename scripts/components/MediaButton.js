@@ -1,13 +1,13 @@
-import { createEl, handleAddBtnClick } from "../utils.js";
+import Component from "../classes/Component.js";
 
-export default function MediaButton({ type }) {
-  const button = createEl("button");
-  button.classList.add("dropdown_btn");
-  button.classList.add(type);
+export default function MediaButton({ type, onClick }) {
+  const button = new Component({
+    el: "button",
+    classList: ["dropdown_btn", type],
+    text: type,
+  });
 
-  button.innerText = type;
+  button.addListener(Component.ListenerTypes.Click, onClick);
 
-  button.addEventListener("click", () => handleAddBtnClick({ type }));
-
-  return button;
+  return button.getDomNode();
 }

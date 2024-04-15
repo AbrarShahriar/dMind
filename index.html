@@ -27,9 +27,6 @@
     <!-- Marked (Markdown Parser) -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-    <!-- Markdown-it (Better Markdown Parser) -->
-    <script src="https://cdn.jsdelivr.net/npm/markdown-it@14.1.0/dist/markdown-it.min.js"></script>
-
     <!-- HighlightJS (code highlighter) -->
     <link
       rel="stylesheet"
@@ -82,6 +79,9 @@
       src="https://cdn.jsdelivr.net/npm/toastify-js"
     ></script>
 
+    <!-- SweetAlert2 (Alert Library) -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <!-- Main Styles -->
     <link rel="stylesheet" href="styles/index.css" />
 
@@ -92,19 +92,19 @@
       <!-- Nav Bar -->
 
       <div
-            class="nav_body drawer_component drawer"
-            data-pushbar-id="drawer"
-            data-pushbar-direction="left"
-          >
-            <div class="actions">
-              <div class="action btn_primary btn_new_note">
-                <i class="si-file-plus"></i>
-                <span>New Note</span>
-              </div>
-            </div>
-            <div class="nav_note_list"></div>
+        class="nav_body drawer_component drawer"
+        data-pushbar-id="drawer"
+        data-pushbar-direction="left"
+      >
+        <div class="actions">
+          <div class="action btn_primary btn_new_note">
+            <i class="si-file-plus"></i>
+            <span>New Note</span>
           </div>
-      
+        </div>
+        <div class="nav_note_list"></div>
+      </div>
+
       <div class="left_panel">
         <div class="actions">
           <div class="action btn_primary btn_new_note">
@@ -117,7 +117,6 @@
 
       <div class="topbar_and_editor-content">
         <div class="topbar">
-          
           <button
             class="btn_icon btn_drawer_open drawer_component"
             data-pushbar-target="drawer"
@@ -146,8 +145,8 @@
           </button>
 
           <div class="status_bar">
-            <button class="undo">undo</button>
-            <button class="redo">redo</button>
+            <!-- <button class="undo">undo</button> -->
+            <!-- <button class="redo">redo</button> -->
           </div>
         </div>
 

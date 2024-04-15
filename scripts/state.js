@@ -1,4 +1,6 @@
+import BlockArea from "./components/BlockArea.js";
 import { ActionTypes } from "./enums.js";
+import { autoResizeTextarea, select, updateSaveButton } from "./utils.js";
 
 export let initialState = {
   editorData: {},
@@ -10,7 +12,7 @@ export let initialState = {
 };
 
 export const dispatch = (action) => {
-  // console.log(action);
+  console.log(action.type, action.payload);
 
   switch (action.type) {
     case ActionTypes.SetEditorData:
@@ -18,6 +20,20 @@ export const dispatch = (action) => {
         ...initialState,
         editorData: action.payload.editorData,
       };
+
+      select(".inputs").innerHTML = "";
+
+      for (const key in initialState.editorData) {
+        select(".inputs").append(
+          BlockArea({
+            id: key,
+            type: initialState.editorData[key].type,
+            defaultValue: initialState.editorData[key].value,
+          })
+        );
+      }
+
+      autoResizeTextarea();
       return;
 
     case ActionTypes.UpdateEditorData:
@@ -38,6 +54,7 @@ export const dispatch = (action) => {
         ...initialState,
         currentNoteSaved: action.payload.currentNoteSaved,
       };
+      updateSaveButton();
       return;
 
     case ActionTypes.SetDbConnection:

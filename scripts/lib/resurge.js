@@ -4,15 +4,20 @@ let redoCount = 1;
 let cursor = 0;
 
 const undo = () => {
-  console.log("index", cursor);
+  // console.log("index", cursor);
   // console.log("index", stateHistory.length - 1 - undoCount);
-  if (cursor >= stateHistory.length) {
-    return stateHistory[0];
-  }
+  // if (cursor >= stateHistory.length) {
+  //   return stateHistory[0];
+  // }
 
-  let undoState = stateHistory[stateHistory.length - 1 - undoCount];
-  undoCount--;
-  return undoState;
+  // let undoState = stateHistory[stateHistory.length - 1 - undoCount];
+  // undoCount--;
+  if(cursor <= 0) {
+    return stateHistory[0]
+  }
+  cursor--
+  console.log("cursor position", cursor)
+  return stateHistory[cursor];
 };
 const redo = () => {
   // let redoState = null;
@@ -28,21 +33,29 @@ const redo = () => {
   //   redoState = stateHistory[redoCount];
   // }
   // console.log("index", stateHistory.length - undoCount + redoCount);
-  console.log("index", cursor);
-  if (stateHistory.length - undoCount + redoCount >= stateHistory.length) {
-    return stateHistory[0];
-  }
+  // console.log("index", cursor);
+  // if (stateHistory.length - undoCount + redoCount >= stateHistory.length) {
+  //   return stateHistory[0];
+  // }
 
-  let redoState = stateHistory[stateHistory.length - undoCount + redoCount];
-  redoCount++;
-  undoCount++;
-  return redoState;
+  // let redoState = stateHistory[stateHistory.length - undoCount + redoCount];
+  // redoCount++;
+  // undoCount++;
+  if(cursor >= stateHistory.length-1) {
+    console.log("reached length")
+    return stateHistory[stateHistory.length-1]
+  }
+  cursor++
+  console.log("cursor position", cursor)
+
+  return stateHistory[cursor];
 };
 
 const setState = (state) => (stateHistory = [state]);
 const getStateHistory = () => stateHistory;
 const addState = (curState) => {
   stateHistory.push(JSON.parse(JSON.stringify(curState)));
+  cursor++
 };
 
 export const resurge = {

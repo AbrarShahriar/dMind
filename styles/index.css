@@ -2,6 +2,10 @@
 @import url("./colors.css");
 @import url("./library_custom_styles.css");
 
+.undo, .redo {
+  opacity: 0;
+}
+
 .container {
   width: 100vw;
   display: flex;
@@ -90,9 +94,9 @@
   margin-bottom: 10px;
   padding-top: 15px;
   padding-left: 15px;
-  /* position: sticky; */
+  position: fixed;
   top: 0;
-  /* z-index: 1; */
+  z-index: 2;
   width: 100%;
 }
 
@@ -120,7 +124,7 @@
 
 .editor,
 .content {
-  margin-top: 30px;
+  margin-top: 80px;
 }
 
 .editor {

@@ -30,20 +30,12 @@ const elements = {
   newNoteBtnList: selectAll(".btn_new_note"),
   undoBtn: select(".undo"),
   redoBtn: select(".redo"),
+  drawer: select(".drawer")
 };
-
-// Detect Click Outside Menu
-document.addEventListener("click", function (event) {
-  const outsideClick = !elements.addBtn.contains(event.target);
-
-  if (outsideClick) {
-    FloatingUI.hideDropdown(elements);
-  }
-});
 
 // Library Initialization
 mermaid.initialize({ startOnLoad: false, theme: "dark" });
-new Pushbar({
+const pushbar = new Pushbar({
   blur: true,
   overlay: true,
 });
@@ -51,6 +43,20 @@ const tabs = new Tabby("[data-tabs]");
 dispatch({
   type: ActionTypes.SetTabs,
   payload: { tabs },
+});
+
+// Detect Click Outside Menu
+document.addEventListener("click", function (event) {
+  const outsideClickOfAddBtn = !elements.addBtn.contains(event.target);
+  const outsideClickOfDrawer = !elements.drawer.contains(event.target)
+
+  if (outsideClickOfAddBtn) {
+    FloatingUI.hideDropdown(elements);
+  }
+  
+  if(outsideClickOfDrawer) {
+    // pushbar.close()
+  }
 });
 
 // DB Initialization
@@ -205,7 +211,7 @@ Object.keys(MediaTypes).forEach((key) => {
   elements.dropdown.append(MediaButton({ type: MediaTypes[key] }));
 });
 
-// resurge.setState(initialState.editorData);
+resurge.setState(initialState.editorData);
 // let obj = {};
 // resurge.setState(obj);
 
@@ -218,4 +224,8 @@ Object.keys(MediaTypes).forEach((key) => {
 // console.log(resurge.getStateHistory());
 // console.log("UNDO", resurge.undo());
 // console.log("REDO", resurge.redo());
+// console.log("REDO", resurge.redo());
+// console.log("REDO", resurge.redo());
+
+// console.log("UNDO", resurge.undo());
 // console.log("UNDO", resurge.undo());

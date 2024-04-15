@@ -89,6 +89,22 @@
   </head>
   <body>
     <div class="container">
+      <!-- Nav Bar -->
+
+      <div
+            class="nav_body drawer_component drawer"
+            data-pushbar-id="drawer"
+            data-pushbar-direction="left"
+          >
+            <div class="actions">
+              <div class="action btn_primary btn_new_note">
+                <i class="si-file-plus"></i>
+                <span>New Note</span>
+              </div>
+            </div>
+            <div class="nav_note_list"></div>
+          </div>
+      
       <div class="left_panel">
         <div class="actions">
           <div class="action btn_primary btn_new_note">
@@ -101,20 +117,7 @@
 
       <div class="topbar_and_editor-content">
         <div class="topbar">
-          <!-- Nav Bar -->
-          <div
-            class="nav_body drawer_component"
-            data-pushbar-id="drawer"
-            data-pushbar-direction="left"
-          >
-            <div class="actions">
-              <div class="action btn_primary btn_new_note">
-                <i class="si-file-plus"></i>
-                <span>New Note</span>
-              </div>
-            </div>
-            <div class="nav_note_list"></div>
-          </div>
+          
           <button
             class="btn_icon btn_drawer_open drawer_component"
             data-pushbar-target="drawer"

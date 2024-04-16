@@ -115,8 +115,8 @@ export const updateSaveButton = () => {
   }
 };
 
-function update(elements) {
-  FloatingUIDOM.computePosition(elements.addBtn, elements.dropdown, {
+function update({trigger, dropdown}) {
+  FloatingUIDOM.computePosition(trigger, dropdown, {
     placement: "bottom",
     middleware: [
       FloatingUIDOM.offset(5),
@@ -124,7 +124,7 @@ function update(elements) {
       FloatingUIDOM.shift({ padding: 10 }),
     ],
   }).then(({ x, y }) => {
-    Object.assign(elements.dropdown.style, {
+    Object.assign(dropdown.style, {
       left: `${x}px`,
       top: `${y}px`,
       display: "flex",
@@ -132,17 +132,23 @@ function update(elements) {
   });
 }
 
-function showDropdown(elements) {
-  elements.dropdown.style.display = "flex";
-  update(elements);
+function showDropdown({trigger, dropdown}) {
+  
+  dropdown.style.display = "flex";
+  update({trigger, dropdown});
 }
 
-function hideDropdown(elements) {
-  elements.dropdown.style.display = "";
+function hideDropdown({dropdown}) {
+  dropdown.style.display = "none";
+}
+
+function hideDropdownAll() {
+  selectAll(".dropdown").forEach(dropdown => hideDropdown({dropdown}))
 }
 
 export const FloatingUI = {
   update,
   showDropdown,
   hideDropdown,
+  hideDropdownAll
 };

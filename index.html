@@ -68,17 +68,6 @@
     <script src="https://cdn.jsdelivr.net/npm/jsstore/dist/jsstore.min.js"></script>
     <script src="scripts/lib/jsstore.worker.js"></script>
 
-    <!-- Toastify (Toast Library) -->
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
-    />
-    <script
-      type="text/javascript"
-      src="https://cdn.jsdelivr.net/npm/toastify-js"
-    ></script>
-
     <!-- SweetAlert2 (Alert Library) -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -154,10 +143,13 @@
           <div id="editor" class="editor">
             <div class="inputs"></div>
             <div class="actions">
-              <button class="btn_primary-bordered btn_add-media">
+              <button 
+              class="btn_primary-bordered btn_add-media dropdown_trigger"
+              data-dropdown-id="id123"
+              >
                 <i class="si-plus"></i>
               </button>
-              <div class="dropdown"></div>
+              <div class="dropdown id123"></div>
             </div>
           </div>
 

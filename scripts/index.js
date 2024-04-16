@@ -41,12 +41,16 @@ dispatch({
 });
 
 // Detect Click Outside Menu
-document.addEventListener("click", function (event) {
-  const outsideClickOfAddBtn = !elements.addBtn.contains(event.target);
+document.addEventListener("click", (event) => {
+  selectAll(".dropdown_trigger").forEach(trigger => {
+    const outsideClickOfTrigger = !trigger.contains(event.target);
 
-  if (outsideClickOfAddBtn) {
-    FloatingUI.hideDropdown(elements);
-  }
+    if (outsideClickOfTrigger) {
+      console.log(trigger.dataset)
+      FloatingUI.hideDropdown(select(`.${trigger.dataset.dropdownId}`));
+    }
+  })
+  
 });
 
 // DB Initialization
@@ -62,7 +66,7 @@ setupDb()
 
 // Event Listeners
 elements.addBtn.addEventListener("click", () => {
-  FloatingUI.showDropdown(elements);
+  FloatingUI.showDropdown({trigger: elements.addBtn, dropdown: elements.dropdown});
 });
 
 elements.renderBtn.addEventListener("click", async () => {

@@ -14,6 +14,7 @@ export default class Component {
     _html = "",
     modifier = {},
     styles = {},
+    dataset = {}
   }) {
     this.createdEl = createEl(el);
 
@@ -38,6 +39,12 @@ export default class Component {
     if (styles) {
       for (const key in styles) {
         this.createdEl.style[key] = styles[key];
+      }
+    }
+    
+    if(dataset) {
+      for (const key in dataset) {
+        this.createdEl.dataset[key] = dataset[key];
       }
     }
   }

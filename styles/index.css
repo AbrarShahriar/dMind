@@ -201,8 +201,8 @@
 .dropdown {
   display: none;
   flex-direction: column;
-  flex-wrap: wrap;
-  width: max-content;
+  max-height: calc(36px*5 + 10px);
+  overflow: scroll;
   position: absolute;
   top: 0;
   left: 0;

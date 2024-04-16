@@ -16,23 +16,15 @@ export default function BlockArea({ id, type, defaultValue = "" }) {
 
   let typeSpan = new Component({
     el: "div",
-    classList: ["type_span"],
+    classList: ["type_span", "dropdown_trigger"],
     text: type,
   });
 
   let typeDropdown = new Component({
     el: "div",
-    classList: ["dropdown", "type_dropdown"],
+    classList: ["dropdown", "type_dropdown", id],
+    dataset: { dropdownId: id }
   });
-
-  let typeDropdownBackBtn = new Component({
-    el: "div",
-    classList: ["dropdown_btn", "type_dropdown_btn_back"],
-    _html: `<div><i class='si-arrow-left'></i> <span>Cancel</span>  </div>`,
-  });
-  typeDropdownBackBtn.addListener(Component.ListenerTypes.Click, hideDropdown);
-
-  typeDropdown.addChild(typeDropdownBackBtn);
 
   Object.keys(MediaTypes).forEach((key) => {
     typeDropdown.addChild(
@@ -57,14 +49,14 @@ export default function BlockArea({ id, type, defaultValue = "" }) {
           typeState = MediaTypes[key];
           typeSpan.setText(MediaTypes[key]);
           // console.log("AFTER", initialState.editorData[id]);
-          hideDropdown();
+          FloatingUI.hideDropdown({dropdown: dropdown.getDomNode()});
         },
       })
     );
   });
 
   typeSpan.addListener(Component.ListenerTypes.Click, () => {
-    showDropdown();
+    FloatingUI.showDropdown({trigger: typeSpan.getDomNode(), dropdown: typeDropdown.getDomNode()});
   });
 
   let p = new Component({
@@ -123,36 +115,6 @@ export default function BlockArea({ id, type, defaultValue = "" }) {
       }
     });
   });
-
-  function update() {
-    FloatingUIDOM.computePosition(
-      typeSpan.getDomNode(),
-      typeDropdown.getDomNode(),
-      {
-        placement: "bottom",
-        middleware: [
-          FloatingUIDOM.offset(5),
-          FloatingUIDOM.flip(),
-          FloatingUIDOM.shift({ padding: 10 }),
-        ],
-      }
-    ).then(({ x, y }) => {
-      Object.assign(typeDropdown.getDomNode().style, {
-        left: `${x}px`,
-        top: `${y}px`,
-        display: "flex",
-      });
-    });
-  }
-
-  function showDropdown() {
-    typeDropdown.getDomNode().style.display = "flex";
-    update();
-  }
-
-  function hideDropdown(elements) {
-    typeDropdown.getDomNode().style.display = "";
-  }
 
   actions.addChildren([typeSpan, typeDropdown, dltBtn]);
   container.addChildren([p, actions]);

@@ -2,12 +2,12 @@
 
 Major:
 
-- [x] Markdown parser (done)
-- [x] Diagram library (done)
-- [x] Image embed (done)
+- [x] Markdown parser
+- [x] Diagram library
+- [x] Image embed
 - [ ] PDF/HTML export
-- [x] LaTeX renderer (done)
+- [x] LaTeX renderer
 - [ ] Electron Integration
 - [ ] Capacitor Integration
 - [ ] Plugin Architecture (rewrite the parser from scratch)
-- [ ] Theme System
+- [x] Theme System

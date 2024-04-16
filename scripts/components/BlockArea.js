@@ -17,7 +17,7 @@ export default function BlockArea({ id, type, defaultValue = "" }) {
   let typeSpan = new Component({
     el: "div",
     classList: ["type_span", "dropdown_trigger"],
-    text: type,
+    _html: `<span>${type}</span><i class="si-chevron-down"></i>`,
     dataset: { "dropdown-id": `dropdown_id_${id}` },
   });
 

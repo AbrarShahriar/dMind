@@ -71,6 +71,23 @@
     <!-- SweetAlert2 (Alert Library) -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <!-- jsPDF (HTML to PDF) -->
+    <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.10/pdfmake.min.js"
+      integrity="sha512-w61kvDEdEhJPJLSAJpuL+RWp1+zTBUUpgPaP+6pcqCk78wQkOaExjnGWrVbovojeisWGQS7XZKz+gr3L+GPYLg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.10/vfs_fonts.js"
+      integrity="sha512-nNkHPz+lD0Wf0eFGO0ZDxr+lWiFalFutgVeGkPdVgrG4eXDYUnhfEj9Zmg1QkrJFLC0tGs8ZExyU/1mjs4j93w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/html-to-pdfmake/browser.js"></script>
     <!-- Main Styles -->
     <link rel="stylesheet" href="styles/index.css" />
 
@@ -143,9 +160,9 @@
           <div id="editor" class="editor">
             <div class="inputs"></div>
             <div class="actions">
-              <button 
-              class="btn_primary-bordered btn_add-media dropdown_trigger"
-              data-dropdown-id="id123"
+              <button
+                class="btn_primary-bordered btn_add-media dropdown_trigger"
+                data-dropdown-id="id123"
               >
                 <i class="si-plus"></i>
               </button>

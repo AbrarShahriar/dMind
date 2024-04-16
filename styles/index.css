@@ -1,5 +1,4 @@
 @import url("./common.css");
-@import url("./colors.css");
 @import url("./library_custom_styles.css");
 
 .undo,
@@ -25,7 +24,7 @@
 .left_panel .actions {
   padding: 10px;
   margin-top: 15px;
-  color: white;
+  color: var(--text-color);
 }
 
 .nav_body {
@@ -35,7 +34,7 @@
 .nav_body .actions {
   padding: 10px;
   margin-top: 15px;
-  color: white;
+  color: var(--text-color);
 }
 
 .actions .action {
@@ -59,7 +58,7 @@
 
 .note {
   padding: 10px 5px 10px 10px;
-  color: white;
+  color: var(--text-color);
   font-size: 15px;
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
@@ -155,6 +154,9 @@
 }
 
 .inputs .input .type_span {
+  display: flex;
+  align-items: center;
+  gap: 3px;
   background-color: var(--left-panel-background);
   color: rgba(255, 255, 255, 0.75);
   font-size: 12px;
@@ -180,7 +182,7 @@
   padding-bottom: 20px;
   word-break: break-all;
   resize: none;
-  color: white;
+  color: var(--text-color);
   background-color: var(--topbar-background);
   border: none;
   outline: none;
@@ -201,13 +203,13 @@
 .dropdown {
   display: none;
   flex-direction: column;
-  max-height: calc(36px*5 + 10px);
+  max-height: calc(36px * 5 + 10px);
   overflow: scroll;
   position: absolute;
   top: 0;
   left: 0;
   background: var(--topbar-background);
-  color: white;
+  color: var(--text-color);
   font-weight: bold;
   border-radius: 5px;
   box-shadow: 1px 1px 10px -5px rgba(100, 100, 100, 0.1);
@@ -222,7 +224,7 @@
   padding: 10px 50px;
   cursor: pointer;
   background-color: transparent;
-  color: white;
+  color: var(--text-color);
   border: none;
   border-radius: 5px;
   transition: background-color 70ms ease-in-out;
@@ -243,7 +245,7 @@
 }
 
 .content {
-  color: white;
+  color: var(--text-color);
   padding: 20px 30px;
 }
 
@@ -275,7 +277,7 @@
   }
 
   .content {
-    color: white;
+    color: var(--text-color);
     padding: 10px 15px;
   }
 }

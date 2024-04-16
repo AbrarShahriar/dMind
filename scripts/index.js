@@ -10,8 +10,13 @@ import {
 import { dispatch, initialState } from "./state.js";
 import { renderContent } from "./lib/parser.js";
 import BlockArea from "./components/BlockArea.js";
+import Theme from "./classes/Theme.js";
 
-// document.documentElement.style.setProperty("--editor-background", "green");
+const { jsPDF } = window.jspdf;
+
+// Set Theme
+const theme = new Theme();
+theme.setTheme("dark");
 
 const elements = {
   content: select(".content"),
@@ -30,7 +35,7 @@ const elements = {
 
 // Library Initialization
 mermaid.initialize({ startOnLoad: false, theme: "dark" });
-const pushbar = new Pushbar({
+new Pushbar({
   blur: true,
   overlay: true,
 });
@@ -74,7 +79,41 @@ elements.addBtn.addEventListener("click", () => {
 
 elements.renderBtn.addEventListener("click", async () => {
   await renderContent();
+
+  const docDef = htmlToPdfmake(select(".content").innerHTML, {
+    removeExtraBlanks: true,
+    defaultStyles: {
+      // change the default styles
+      a: {
+        // for <A>
+        color: "purple", // all links should be 'purple'
+        decoration: "", // remove underline
+      },
+      li: "", // remove all default styles for <LI>
+    },
+  });
+  const docDefinition = {
+    content: [docDef],
+    styles: {
+      "html-strong": {
+        background: "yellow", // it will add a yellow background to all <STRONG> elements
+      },
+    },
+  };
+  // pdfMake.createPdf({ content: docDef }).open();
 });
+function generatePDF() {
+  const doc = new jsPDF({ unit: "pt" }); // create jsPDF object
+  const pdfElement = select(".content"); // HTML element to be converted to PDF
+
+  doc.html(pdfElement, {
+    callback: (pdf) => {
+      pdf.save("MyPdfFile.pdf");
+    },
+    margin: 32, // optional: page margin
+    // optional: other HTMLOptions
+  });
+}
 
 elements.saveBtn.addEventListener("click", async () => {
   let noOfRowsUpdated = 0;

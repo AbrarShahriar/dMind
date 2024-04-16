@@ -18,12 +18,12 @@ export default function BlockArea({ id, type, defaultValue = "" }) {
     el: "div",
     classList: ["type_span", "dropdown_trigger"],
     text: type,
+    dataset: { "dropdown-id": `dropdown_id_${id}` },
   });
 
   let typeDropdown = new Component({
     el: "div",
-    classList: ["dropdown", "type_dropdown", id],
-    dataset: { dropdownId: id }
+    classList: ["dropdown", "type_dropdown", `dropdown_id_${id}`],
   });
 
   Object.keys(MediaTypes).forEach((key) => {
@@ -31,7 +31,6 @@ export default function BlockArea({ id, type, defaultValue = "" }) {
       MediaButton({
         type: MediaTypes[key],
         onClick: () => {
-          // console.log("BEFORE", initialState.editorData[id]);
           dispatch({
             type: ActionTypes.UpdateEditorData,
             payload: {
@@ -48,15 +47,17 @@ export default function BlockArea({ id, type, defaultValue = "" }) {
           });
           typeState = MediaTypes[key];
           typeSpan.setText(MediaTypes[key]);
-          // console.log("AFTER", initialState.editorData[id]);
-          FloatingUI.hideDropdown({dropdown: dropdown.getDomNode()});
+          FloatingUI.hideDropdown({ dropdown: typeDropdown.getDomNode() });
         },
       })
     );
   });
 
   typeSpan.addListener(Component.ListenerTypes.Click, () => {
-    FloatingUI.showDropdown({trigger: typeSpan.getDomNode(), dropdown: typeDropdown.getDomNode()});
+    FloatingUI.showDropdown({
+      trigger: typeSpan.getDomNode(),
+      dropdown: typeDropdown.getDomNode(),
+    });
   });
 
   let p = new Component({

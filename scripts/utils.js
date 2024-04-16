@@ -115,7 +115,7 @@ export const updateSaveButton = () => {
   }
 };
 
-function update({trigger, dropdown}) {
+function update({ trigger, dropdown }) {
   FloatingUIDOM.computePosition(trigger, dropdown, {
     placement: "bottom",
     middleware: [
@@ -132,23 +132,22 @@ function update({trigger, dropdown}) {
   });
 }
 
-function showDropdown({trigger, dropdown}) {
-  
+function showDropdown({ trigger, dropdown }) {
   dropdown.style.display = "flex";
-  update({trigger, dropdown});
+  update({ trigger, dropdown });
 }
 
-function hideDropdown({dropdown}) {
-  dropdown.style.display = "none";
+function hideDropdown({ dropdown }) {
+  dropdown.style.display = "";
 }
 
 function hideDropdownAll() {
-  selectAll(".dropdown").forEach(dropdown => hideDropdown({dropdown}))
+  selectAll(".dropdown").forEach((dropdown) => hideDropdown({ dropdown }));
 }
 
 export const FloatingUI = {
   update,
   showDropdown,
   hideDropdown,
-  hideDropdownAll
+  hideDropdownAll,
 };

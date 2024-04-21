@@ -4,6 +4,7 @@ import { autoResizeTextarea, select, updateSaveButton } from "./utils.js";
 
 export let initialState = {
   editorData: {},
+  editorDataV2: "",
   currentNoteSaved: false,
   dbConnection: null,
   currentNoteId: null,
@@ -82,6 +83,20 @@ export const dispatch = (action) => {
       initialState = {
         ...initialState,
         tabs: action.payload.tabs,
+      };
+      return;
+
+    case ActionTypes.SetEditorDataV2:
+      initialState = {
+        ...initialState,
+        editorDataV2: action.payload.editorDataV2,
+      };
+      return;
+
+    case ActionTypes.UpdateEditorDataV2:
+      initialState = {
+        ...initialState,
+        editorDataV2: action.payload.editorDataV2,
       };
       return;
 

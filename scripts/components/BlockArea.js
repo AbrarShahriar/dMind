@@ -85,6 +85,12 @@ export default function BlockArea({ id, type, defaultValue = "" }) {
           value: e.target.innerText,
         },
       });
+      dispatch({
+        type: ActionTypes.UpdateEditorDataV2,
+        payload: {
+          editorDataV2: e.target.innerText,
+        },
+      });
     });
   });
 

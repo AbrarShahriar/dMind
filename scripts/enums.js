@@ -4,16 +4,6 @@ export const MediaTypes = {
   Latex: "latex",
   Diagram: "diagram",
   Table: "table",
-  // Table2: "table",
-  // Table3: "table",
-  // Table4: "table",
-  // Table5: "table",
-  // Table6: "table",
-  // Table7: "table",
-  // Table8: "table",
-  // Table9: "table",
-  // Table10: "table",
-  // Table11: "table",
 };
 
 export const ActionTypes = {
@@ -24,4 +14,6 @@ export const ActionTypes = {
   SetCurrentNoteId: "set_current_note_id",
   SetPreviouslyCreatedNoteOpened: "set_previously_created_note_opened",
   SetTabs: "set_tabs",
+  SetEditorDataV2: "set_editor_data_v2",
+  UpdateEditorDataV2: "update_editor_data_v2",
 };

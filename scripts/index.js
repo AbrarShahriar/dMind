@@ -171,6 +171,10 @@ elements.newNoteBtnList.forEach((newNoteBtn) => {
       payload: { editorData: {} },
     });
     dispatch({
+      type: ActionTypes.SetEditorDataV2,
+      payload: { editorDataV2: "" },
+    });
+    dispatch({
       type: ActionTypes.SetPreviouslyCreatedNoteOpened,
       payload: { previouslyCreatedNoteOpened: false },
     });

@@ -36,6 +36,11 @@ export default function Note({ id, body }) {
     });
 
     dispatch({
+      type: ActionTypes.SetEditorDataV2,
+      payload: { editorDataV2: body },
+    });
+
+    dispatch({
       type: ActionTypes.SetCurrentNoteId,
       payload: { currentNoteId: id },
     });
@@ -67,6 +72,11 @@ export default function Note({ id, body }) {
         dispatch({
           type: ActionTypes.SetEditorData,
           payload: { editorData: {} },
+        });
+
+        dispatch({
+          type: ActionTypes.SetEditorDataV2,
+          payload: { editorDataV2: "" },
         });
 
         dispatch({

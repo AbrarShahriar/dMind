@@ -5,29 +5,29 @@ import { ruleSets } from "./rules.js";
 // @ts-nocheck
 mermaid.initialize({ startOnLoad: false });
 
-const el = {
-  input: document.querySelector(".input"),
-  output: document.querySelector(".output"),
-  renderBtn: document.querySelector(".render"),
-};
+// const el = {
+//   input: document.querySelector(".input"),
+//   output: document.querySelector(".output"),
+//   renderBtn: document.querySelector(".render"),
+// };
 
-el.renderBtn.addEventListener("click", async () => {
-  el.output.innerHTML = "";
+// el.renderBtn.addEventListener("click", async () => {
+//   el.output.innerHTML = "";
 
-  el.output.innerHTML = parseMd(el.input.value);
+//   el.output.innerHTML = parseMd(el.input.value);
 
-  hljs.highlightAll();
-  renderMathInElement(el.output, {
-    delimiters: [
-      { left: "$$", right: "$$", display: true },
-      { left: "$", right: "$", display: false },
-    ],
-    throwOnError: false,
-  });
-  await mermaid.run();
-});
+//   hljs.highlightAll();
+//   renderMathInElement(el.output, {
+//     delimiters: [
+//       { left: "$$", right: "$$", display: true },
+//       { left: "$", right: "$", display: false },
+//     ],
+//     throwOnError: false,
+//   });
+//   await mermaid.run();
+// });
 
-function parseMd(md) {
+export function parseMd(md) {
   let html = md;
 
   ruleSets.forEach((ruleSet) => {

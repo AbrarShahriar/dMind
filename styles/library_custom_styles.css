@@ -39,23 +39,11 @@
   }
 }
 
-/* MarkedJS */
-
-.md_list {
-  margin-left: 15px;
-}
-
-.md_blockquote {
-  display: block;
-  padding: 5px 5px 5px 15px;
-  border-left: 3px solid var(--button-background);
-}
-
 /* TTable */
 
 .ttable {
   width: 100%;
-  font-size: 14px;
+  font-size: 16px;
   /* border-collapse: collapse; */
   border: 1px solid var(--left-panel-background);
   text-align: center;

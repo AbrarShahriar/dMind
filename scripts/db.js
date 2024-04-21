@@ -12,11 +12,9 @@ export const setupDb = async () => {
     name: "Notes",
     columns: {
       id: { primaryKey: true, autoIncrement: true },
-      title: { notNull: true, dataType: "string", default: generateId() },
-      body: { notNull: true, dataType: "object" },
+      body: { notNull: true, dataType: "string" },
       createdAt: { notNull: true, dataType: "date_time", default: new Date() },
       updatedAt: { notNull: true, dataType: "date_time", default: new Date() },
-      sortingOrder: { auroincrement: true },
     },
   };
 
@@ -44,7 +42,7 @@ export const updateCurrentNote = async () => {
     },
     set: {
       updatedAt: new Date(),
-      body: initialState.editorData,
+      body: initialState.editorDataV2,
     },
   });
 
@@ -57,7 +55,7 @@ export const insertNewNote = async () => {
     into: "Notes",
     values: [
       {
-        body: initialState.editorData,
+        body: initialState.editorDataV2,
       },
     ],
     return: true,

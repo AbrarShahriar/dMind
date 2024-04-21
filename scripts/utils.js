@@ -1,5 +1,4 @@
-import { ActionTypes } from "./enums.js";
-import { dispatch, initialState } from "./state.js";
+import { initialState } from "./state.js";
 
 export const createEl = (el) => document.createElement(el);
 export const select = (el) => document.querySelector(el);
@@ -82,26 +81,20 @@ export const generateId = (length = 8) => {
   return id;
 };
 
-export const autoResizeTextarea = (e, id, type, dispatchFunc) => {
-  const tx = selectAll(".inputs p");
+export const autoResizeTextarea = (e, dispatchFunc) => {
+  var scrollTop = window.scrollY;
+  var scrollLeft = window.scrollX;
+  const textarea = select(".editor_input");
 
-  tx.forEach((textarea) => {
-    textarea.style.height = "auto";
-    textarea.style.height = textarea.scrollHeight + "px";
-    textarea.scrollTop = textarea.scrollHeight;
-  });
+  textarea.style.height = "auto";
+  textarea.style.height = textarea.scrollHeight + "px";
+  textarea.scrollTop = textarea.scrollHeight;
 
   if (e) {
     dispatchFunc();
-    // dispatch({
-    //   type: ActionTypes.UpdateEditorData,
-    //   payload: {
-    //     mediaType: type,
-    //     id,
-    //     value: e.target.innerText,
-    //   },
-    // });
   }
+
+  window.scrollTo(scrollLeft, scrollTop);
 };
 
 export const updateSaveButton = () => {
@@ -113,41 +106,4 @@ export const updateSaveButton = () => {
     saveBtn.innerHTML = `<i class="btn_icon si-disk"></i>`;
     saveBtn.disabled = false;
   }
-};
-
-function update({ trigger, dropdown }) {
-  FloatingUIDOM.computePosition(trigger, dropdown, {
-    placement: "bottom",
-    middleware: [
-      FloatingUIDOM.offset(5),
-      FloatingUIDOM.flip(),
-      FloatingUIDOM.shift({ padding: 10 }),
-    ],
-  }).then(({ x, y }) => {
-    Object.assign(dropdown.style, {
-      left: `${x}px`,
-      top: `${y}px`,
-      display: "flex",
-    });
-  });
-}
-
-function showDropdown({ trigger, dropdown }) {
-  dropdown.style.display = "flex";
-  update({ trigger, dropdown });
-}
-
-function hideDropdown({ dropdown }) {
-  dropdown.style.display = "";
-}
-
-function hideDropdownAll() {
-  selectAll(".dropdown").forEach((dropdown) => hideDropdown({ dropdown }));
-}
-
-export const FloatingUI = {
-  update,
-  showDropdown,
-  hideDropdown,
-  hideDropdownAll,
 };

@@ -1,6 +1,5 @@
-import { select, FloatingUI, selectAll, generateId } from "./utils.js";
-import { ActionTypes, MediaTypes } from "./enums.js";
-import MediaButton from "./components/MediaButton.js";
+import { autoResizeTextarea, select, selectAll } from "./utils.js";
+import { ActionTypes } from "./enums.js";
 import {
   setupDb,
   renderRetrievedNoteList,
@@ -8,11 +7,8 @@ import {
   insertNewNote,
 } from "./db.js";
 import { dispatch, initialState } from "./state.js";
-import { renderContent } from "./lib/parser.js";
-import BlockArea from "./components/BlockArea.js";
 import Theme from "./classes/Theme.js";
-
-const { jsPDF } = window.jspdf;
+import { parseMd } from "./parser/parser.js";
 
 // Set Theme
 const theme = new Theme();
@@ -21,15 +17,11 @@ theme.setTheme("dark");
 const elements = {
   content: select(".content"),
   editor: select(".editor"),
-  addBtn: select(".btn_add-media"),
+  editorInput: select(".editor_input"),
   renderBtn: select(".btn_render"),
   saveBtn: select(".btn_save"),
-  dropdown: select(".dropdown"),
   noteList: select(".note_list"),
-  inputs: select(".inputs"),
   newNoteBtnList: selectAll(".btn_new_note"),
-  undoBtn: select(".undo"),
-  redoBtn: select(".redo"),
   drawer: select(".drawer"),
 };
 
@@ -45,19 +37,6 @@ dispatch({
   payload: { tabs },
 });
 
-// Detect Click Outside Menu
-document.addEventListener("click", (event) => {
-  selectAll(".dropdown_trigger").forEach((trigger) => {
-    const outsideClickOfTrigger = !trigger.contains(event.target);
-
-    if (outsideClickOfTrigger) {
-      FloatingUI.hideDropdown({
-        dropdown: select(`.${trigger.dataset.dropdownId}`),
-      });
-    }
-  });
-});
-
 // DB Initialization
 setupDb()
   .then(async (con) => {
@@ -66,61 +45,43 @@ setupDb()
       payload: { dbConnection: con },
     });
     await renderRetrievedNoteList();
+
+    autoResizeTextarea();
   })
   .catch((err) => console.error(err));
 
 // Event Listeners
-elements.addBtn.addEventListener("click", () => {
-  FloatingUI.showDropdown({
-    trigger: elements.addBtn,
-    dropdown: elements.dropdown,
+elements.editorInput.addEventListener("input", (e) => {
+  autoResizeTextarea(e, () => {
+    dispatch({
+      type: ActionTypes.UpdateEditorDataV2,
+      payload: { editorDataV2: e.target.value },
+    });
+    dispatch({
+      type: ActionTypes.UpdateCurrentNoteSavedState,
+      payload: { currentNoteSaved: false },
+    });
   });
 });
 
 elements.renderBtn.addEventListener("click", async () => {
-  await renderContent();
-
-  const docDef = htmlToPdfmake(select(".content").innerHTML, {
-    removeExtraBlanks: true,
-    defaultStyles: {
-      // change the default styles
-      a: {
-        // for <A>
-        color: "purple", // all links should be 'purple'
-        decoration: "", // remove underline
-      },
-      li: "", // remove all default styles for <LI>
-    },
+  elements.content.innerHTML = parseMd(initialState.editorDataV2);
+  hljs.highlightAll();
+  renderMathInElement(elements.content, {
+    delimiters: [
+      { left: "$$", right: "$$", display: true },
+      { left: "$", right: "$", display: false },
+    ],
+    throwOnError: false,
   });
-  const docDefinition = {
-    content: [docDef],
-    styles: {
-      "html-strong": {
-        background: "yellow", // it will add a yellow background to all <STRONG> elements
-      },
-    },
-  };
-  // pdfMake.createPdf({ content: docDef }).open();
+  await mermaid.run();
 });
-function generatePDF() {
-  const doc = new jsPDF({ unit: "pt" }); // create jsPDF object
-  const pdfElement = select(".content"); // HTML element to be converted to PDF
-
-  doc.html(pdfElement, {
-    callback: (pdf) => {
-      pdf.save("MyPdfFile.pdf");
-    },
-    margin: 32, // optional: page margin
-    // optional: other HTMLOptions
-  });
-}
 
 elements.saveBtn.addEventListener("click", async () => {
   let noOfRowsUpdated = 0;
   let newlyCreatedNote = null;
 
-  const isEditorEmpty =
-    Object.keys(initialState.editorData).length <= 0 ? true : false;
+  const isEditorEmpty = initialState.editorDataV2 == "" ? true : false;
 
   if (isEditorEmpty) {
     return Swal.fire({
@@ -179,99 +140,8 @@ elements.newNoteBtnList.forEach((newNoteBtn) => {
       payload: { previouslyCreatedNoteOpened: false },
     });
 
-    elements.inputs.innerHTML = "";
     elements.content.innerHTML = "";
 
     tabs.toggle("#editor");
   });
 });
-
-// Add Media Buttons To Dropdown
-
-Object.keys(MediaTypes).forEach((key) => {
-  elements.dropdown.append(
-    MediaButton({
-      type: MediaTypes[key],
-      onClick: () => {
-        elements.inputs.append(
-          BlockArea({
-            id: generateId(),
-            type: MediaTypes[key],
-          })
-        );
-      },
-    })
-  );
-});
-
-// UNDO REDO
-
-// elements.undoBtn.addEventListener("click", () => {
-//   dispatch({
-//     type: ActionTypes.SetEditorData,
-//     payload: { editorData: resurge.undo() },
-//   });
-//   console.log(initialState.editorData);
-//   dispatch({
-//     type: ActionTypes.UpdateCurrentNoteSavedState,
-//     payload: { currentNoteSaved: false },
-//   });
-
-//   select(".inputs").innerHTML = "";
-
-//   for (const key in initialState.editorData) {
-//     select(".inputs").append(
-//       BlockArea({
-//         id: key,
-//         type: initialState.editorData[key].type,
-//         defaultValue: initialState.editorData[key].value,
-//       })
-//     );
-//   }
-//   updateSaveButton();
-//   autoResizeTextarea();
-// });
-
-// elements.redoBtn.addEventListener("click", () => {
-//   dispatch({
-//     type: ActionTypes.SetEditorData,
-//     payload: { editorData: resurge.redo() },
-//   });
-//   console.log(initialState.editorData);
-//   dispatch({
-//     type: ActionTypes.UpdateCurrentNoteSavedState,
-//     payload: { currentNoteSaved: false },
-//   });
-//   select(".inputs").innerHTML = "";
-
-//   for (const key in initialState.editorData) {
-//     select(".inputs").append(
-//       BlockArea({
-//         id: key,
-//         type: initialState.editorData[key].type,
-//         defaultValue: initialState.editorData[key].value,
-//       })
-//     );
-//   }
-//   updateSaveButton();
-//   autoResizeTextarea();
-// });
-
-// resurge.setState(initialState.editorData);
-// let obj = {};
-// resurge.setState(obj);
-
-// obj = { ...obj, a: 1 };
-
-// resurge.addState(obj);
-// delete obj.a;
-// resurge.addState(obj);
-
-// console.log(resurge.getStateHistory());
-// console.log("UNDO", resurge.undo());
-// console.log("REDO", resurge.redo());
-// console.log("REDO", resurge.redo());
-// console.log("REDO", resurge.redo());
-
-// console.log("UNDO", resurge.undo());
-// console.log("UNDO", resurge.undo());

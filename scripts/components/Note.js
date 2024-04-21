@@ -2,14 +2,14 @@ import Component from "../classes/Component.js";
 import { deleteCurrentNode } from "../db.js";
 import { ActionTypes } from "../enums.js";
 import { dispatch, initialState } from "../state.js";
-import { select } from "../utils.js";
+import { autoResizeTextarea, select } from "../utils.js";
 
-const mdCharacters = ["#", "*", "_"];
+const mdCharacters = ["#", "*", "_", "$", "%", "^", "-", "~"];
 
 export default function Note({ id, body }) {
   let note = new Component({ el: "div", classList: ["note"] });
 
-  let noteTitle = Object.values(body)[0].value.split("\n")[0];
+  let noteTitle = body.split("\n")[0];
 
   let title = new Component({
     el: "span",
@@ -54,6 +54,9 @@ export default function Note({ id, body }) {
       type: ActionTypes.UpdateCurrentNoteSavedState,
       payload: { currentNoteSaved: true },
     });
+
+    select(".editor_input").value = body;
+    autoResizeTextarea();
   });
 
   dltBtn.addListener(Component.ListenerTypes.Click, async () => {

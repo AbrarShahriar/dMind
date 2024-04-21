@@ -1,37 +1,39 @@
 import { MD_Types } from "./node_types.js";
 
+let headerIcon = "bookmark";
+
 export const ruleSets = [
   // HEADERS
   [
     {
       type: MD_Types.HEADER,
       regex: /^(#{6}\s)(.*)/gm,
-      template: `<h6>$2</h6>`,
+      template: `<h6><i class="si-${headerIcon} header_icon"></i>$2</h6>`,
     },
     {
       type: MD_Types.HEADER,
       regex: /^(#{5}\s)(.*)/gm,
-      template: `<h5>$2</h5>`,
+      template: `<h5><i class="si-${headerIcon} header_icon"></i>$2</h5>`,
     },
     {
       type: MD_Types.HEADER,
       regex: /^(#{4}\s)(.*)/gm,
-      template: `<h4>$2</h4>`,
+      template: `<h4><i class="si-${headerIcon} header_icon"></i>$2</h4>`,
     },
     {
       type: MD_Types.HEADER,
       regex: /^(#{3}\s)(.*)/gm,
-      template: `<h3>$2</h3>`,
+      template: `<h3><i class="si-${headerIcon} header_icon"></i>$2</h3>`,
     },
     {
       type: MD_Types.HEADER,
       regex: /^(#{2}\s)(.*)/gm,
-      template: `<h2>$2</h2>`,
+      template: `<h2><i class="si-${headerIcon} header_icon"></i>$2</h2>`,
     },
     {
       type: MD_Types.HEADER,
       regex: /^(#{1}\s)(.*)/gm,
-      template: `<h1>$2</h1>`,
+      template: `<h1><i class="si-${headerIcon} header_icon"></i>$2</h1>`,
     },
   ],
 

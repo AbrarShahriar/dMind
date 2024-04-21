@@ -1,11 +1,6 @@
 @import url("./common.css");
 @import url("./library_custom_styles.css");
 
-.undo,
-.redo {
-  opacity: 0;
-}
-
 .container {
   width: 100vw;
   display: flex;
@@ -108,13 +103,6 @@
   display: none;
 }
 
-/* .topbar .status_bar {
-  position: absolute;
-  color: rgba(255, 255, 255, 0.75);
-  font-size: 16px;
-  bottom: -24px;
-} */
-
 .btn_save {
   font-size: 22px;
   margin-right: 10px;
@@ -131,126 +119,67 @@
   padding: 10px 20px 10px 30px;
 }
 
-.editor .inputs {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+.editor_input {
+  font-family: "Fira Code";
   width: 100%;
-  margin-bottom: 20px;
-}
-
-.inputs .input {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  align-items: flex-end;
-}
-
-.input .block_actions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.inputs .input .type_span {
-  display: flex;
-  align-items: center;
-  gap: 3px;
-  background-color: var(--left-panel-background);
-  color: rgba(255, 255, 255, 0.75);
-  font-size: 12px;
+  resize: none;
+  background-color: transparent;
+  color: var(--text-color);
+  font-size: 18px;
   padding: 5px;
   border-radius: 5px;
-  text-transform: capitalize;
-}
-
-.btn_delete {
-  cursor: pointer;
-  background-color: transparent;
-  font-size: 20px;
-  color: var(--button-active-background-danger);
   border: none;
 }
 
-.inputs .input textarea,
-.inputs .input p {
-  align-self: stretch;
-  font-size: 16px;
-  width: 100%;
-  padding: 10px;
-  padding-bottom: 20px;
-  word-break: break-all;
-  resize: none;
-  color: var(--text-color);
-  background-color: var(--topbar-background);
+.editor_input:focus {
   border: none;
   outline: none;
-  border-radius: 5px;
-}
-
-.inputs .input textarea:focus,
-.inputs .input p:focus {
-  outline: 1px solid var(--border-color);
-}
-
-.btn_add-media {
-  display: block;
-  width: 50%;
-  margin: 0 auto 50px auto;
-}
-
-.dropdown {
-  display: none;
-  flex-direction: column;
-  max-height: calc(36px * 5 + 10px);
-  overflow: scroll;
-  position: absolute;
-  top: 0;
-  left: 0;
-  background: var(--topbar-background);
-  color: var(--text-color);
-  font-weight: bold;
-  border-radius: 5px;
-  box-shadow: 1px 1px 10px -5px rgba(100, 100, 100, 0.1);
-}
-
-.type_dropdown {
-  z-index: 1;
-}
-
-.dropdown_btn {
-  text-transform: capitalize;
-  padding: 10px 50px;
-  cursor: pointer;
-  background-color: transparent;
-  color: var(--text-color);
-  border: none;
-  border-radius: 5px;
-  transition: background-color 70ms ease-in-out;
-  font-size: 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-.dropdown_btn:hover {
-  background-color: var(--left-panel-background);
-}
-
-.type_span {
-  cursor: pointer;
-}
-
-.type_dropdown_btn_back {
-  display: flex;
-  align-items: center;
 }
 
 .content {
+  font-family: "Inter";
+  width: 100%;
   color: var(--text-color);
   padding: 20px 30px;
+  font-size: 18px;
+  white-space: pre-line;
 }
 
-.content > * {
-  margin-bottom: 20px;
+.content > h1,
+.content > h2,
+.content > h3,
+.content > h4,
+.content > h5,
+.content > h6 {
+  margin-bottom: -10px;
+}
+
+.content .header_icon {
+  margin-right: 5px;
+  color: var(--border-color);
+}
+
+.content img {
+  width: 100%;
+}
+
+.content li {
+  margin-left: 30px;
+}
+
+.content li::marker {
+  color: var(--button-active-background);
+}
+
+.content blockquote {
+  border-left: 5px solid gray;
+  padding-left: 10px;
+  margin: 0 0 0 20px;
+}
+
+.content .diagram {
+  display: flex;
+  justify-content: center;
 }
 
 @media only screen and (max-width: 768px) {
